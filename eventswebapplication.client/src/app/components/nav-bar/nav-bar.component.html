@@ -1,0 +1,9 @@
+<nav class="navbar">
+  <a routerLink="/" class="logo">IvanStar</a>
+  <ul>
+    <li><a routerLink="/">Список мероприятий</a></li>
+    <li><a routerLink="/about-company">О компании</a></li>
+    <li *ngIf="showCabinetButton"><a routerLink="" >Личный кабинет</a></li>
+    <li *ngIf="showSignInButton"><a routerLink ="/auth" class="btn">Sign In</a></li> 
+  </ul>
+</nav>
