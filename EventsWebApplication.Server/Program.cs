@@ -1,9 +1,10 @@
-
 using EventsWebApplication.Server.Application.Interfaces;
 using EventsWebApplication.Server.Application.Services;
+using EventsWebApplication.Server.Application.Validators;
 using EventsWebApplication.Server.Domain.Interfaces;
 using EventsWebApplication.Server.Infrastructure.Data;
 using EventsWebApplication.Server.Infrastructure.Repositories;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventsWebApplication.Server
@@ -28,12 +29,23 @@ namespace EventsWebApplication.Server
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+
             // Инъекция зависимостей
             builder.Services.AddScoped<IEventService, EventService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEventRepository, EventRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+
+
+            builder.Services.AddFluentValidation(config =>
+            {
+                config.RegisterValidatorsFromAssemblyContaining<DateOnlyDtoValidator>();
+                config.RegisterValidatorsFromAssemblyContaining<UserCreateDtoValidator>();
+                config.RegisterValidatorsFromAssemblyContaining<UserUpdateDtoValidator>();
+            });
 
             var app = builder.Build();
 
