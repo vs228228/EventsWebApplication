@@ -46,7 +46,7 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
             .ToListAsync();
         }
 
-        public async Task RegisterUserToEventAsync(int userId, int eventId)
+        public async Task RegisterUserForEventAsync(int userId, int eventId)
         {
             var participant = new EventParticipant
             {

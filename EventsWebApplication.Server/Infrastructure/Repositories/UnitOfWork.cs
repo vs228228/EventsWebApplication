@@ -12,10 +12,12 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
             _context = context;
             Events = new EventRepository(_context);
             Users = new UserRepository(_context);
+            Notifications = new NotificationRepository(_context);
         }
 
         public IEventRepository Events { get; set; }
         public IUserRepository Users { get; set; }
+        public INotificationRepository Notifications { get; set; }
 
         public async Task SaveChangesAsync()
         {

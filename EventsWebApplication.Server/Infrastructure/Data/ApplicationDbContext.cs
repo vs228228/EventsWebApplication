@@ -10,6 +10,7 @@ namespace EventsWebApplication.Server.Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventParticipant> Participants { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,8 +27,8 @@ namespace EventsWebApplication.Server.Infrastructure.Data
 
             // автоинкремент не нужен в промежуточной таблице
             modelBuilder.Entity<EventParticipant>()
-        .Property(ep => ep.UserId)
-        .ValueGeneratedNever();
+                .Property(ep => ep.UserId)
+                .ValueGeneratedNever();
 
             modelBuilder.Entity<EventParticipant>()
                 .Property(ep => ep.EventId)
@@ -46,6 +47,20 @@ namespace EventsWebApplication.Server.Infrastructure.Data
                 .HasOne(uer => uer.Event)
                 .WithMany(e => e.Participants)
                 .HasForeignKey(uer => uer.EventId);
+
+            // One-To-Many
+            modelBuilder.Entity<User>()
+            .HasMany(u => u.Notifications)
+            .WithOne(n => n.User)
+            .HasForeignKey(n => n.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Notification>()
+            .HasKey(n => n.Id);
+
+            modelBuilder.Entity<Notification>()
+                .Property(n => n.Id)
+                .ValueGeneratedOnAdd();
 
         }
 
