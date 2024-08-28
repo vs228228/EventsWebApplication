@@ -3,6 +3,7 @@ using System;
 using EventsWebApplication.Server.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventsWebApplication.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240825143220_AddSomeNewColumns")]
+    partial class AddSomeNewColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -68,29 +71,6 @@ namespace EventsWebApplication.Server.Migrations
                     b.ToTable("Participants");
                 });
 
-            modelBuilder.Entity("EventsWebApplication.Server.Domain.Entities.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notifications");
-                });
-
             modelBuilder.Entity("EventsWebApplication.Server.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -108,6 +88,10 @@ namespace EventsWebApplication.Server.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NotificationString")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -143,17 +127,6 @@ namespace EventsWebApplication.Server.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EventsWebApplication.Server.Domain.Entities.Notification", b =>
-                {
-                    b.HasOne("EventsWebApplication.Server.Domain.Entities.User", "User")
-                        .WithMany("Notifications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("EventsWebApplication.Server.Domain.Entities.Event", b =>
                 {
                     b.Navigation("Participants");
@@ -162,8 +135,6 @@ namespace EventsWebApplication.Server.Migrations
             modelBuilder.Entity("EventsWebApplication.Server.Domain.Entities.User", b =>
                 {
                     b.Navigation("Events");
-
-                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }
