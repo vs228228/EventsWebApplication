@@ -10,7 +10,7 @@
         public string Password { get; set; }
         public DateOnly Birthday { get; set; }
         public bool IsAdmin { get; set; }
-        public string NotificationString { get; set; } = "";
+        public ICollection<Notification> Notifications { get; set; }
         public ICollection<EventParticipant> Events { get; set; }
 
         

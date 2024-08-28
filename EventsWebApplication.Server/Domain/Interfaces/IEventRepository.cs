@@ -12,7 +12,7 @@ namespace EventsWebApplication.Server.Domain.Interfaces
         Task<Event> GetEventsByTypeAsync(string type);*/
         Task<IEnumerable<Event>> GetAllEventsAsync();
         Task<IEnumerable<User>> GetUsersByEventIdAsync(int eventId);
-        Task RegisterUserToEventAsync(int userId, int eventId);
+        Task RegisterUserForEventAsync(int userId, int eventId);
         Task UnregisterUserFromEventAsync(int userId, int eventId);
         Task AddEventAsync(Event eventObject);
         Task UpdateEventAsync(Event eventOjbect);

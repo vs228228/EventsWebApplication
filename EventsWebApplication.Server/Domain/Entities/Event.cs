@@ -7,7 +7,7 @@
         public string Description { get; set; }
         public  DateTime DateAndTime{ get; set; }
         public string Place {  get; set; } // не присутстует в бд
-        public string Type { get; set; } // возможно стоит рассмотреть использование Enum
+        public string Type { get; set; }
         public int MaxPacticipants { get; set; }
         public ICollection<EventParticipant> Participants { get; set; }
 

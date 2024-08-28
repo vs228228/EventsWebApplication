@@ -4,6 +4,7 @@
     {
         IEventRepository Events { get; set; }
         IUserRepository Users { get; set; }
+        INotificationRepository Notifications { get; set; }
         Task SaveChangesAsync();
     }
 }
