@@ -5,12 +5,13 @@ namespace EventsWebApplication.Server.Application.Interfaces
 {
     public interface IEventService
     {
-        Task<Event> GetEventByIdAsync(int id);
-        Task<IEnumerable<Event>> GetAllEventsAsync();
-        Task RegisterUserToEventAsync(UserEventIdDto userEventInfo);
+        Task<EventDto> GetEventByIdAsync(int id);
+        Task<IEnumerable<EventDto>> GetAllEventsAsync();
+        Task<IEnumerable<UserDto>> GetUsersByEventIdAsync(int eventId);
+        Task RegisterUserForEventAsync(UserEventIdDto userEventInfo);
         Task UnregisterUserFromEventAsync(UserEventIdDto userEventInfo);
-        Task AddEventAsync(Event eventObject);
-        Task UpdateEventAsync(Event eventObject);
+        Task AddEventAsync(EventCreateDto eventObject);
+        Task UpdateEventAsync(EventUpdateDto eventObject);
         Task DeleteEventAsync(int id);
     }
 }

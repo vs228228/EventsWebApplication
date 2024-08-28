@@ -1,7 +1,10 @@
-﻿using EventsWebApplication.Server.Application.DTOs;
+﻿using AutoMapper;
+using EventsWebApplication.Server.Application.DTOs;
 using EventsWebApplication.Server.Application.Interfaces;
+using EventsWebApplication.Server.Application.Pagination;
 using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace EventsWebApplication.Server.Application.Services
 {
@@ -9,29 +12,35 @@ namespace EventsWebApplication.Server.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly IMapper _mapper;
 
-        public UserService(IUnitOfWork unitOfWork)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
-            return await _unitOfWork.Users.GetAllUsersAsync();
-        }
-
-        public async Task<IEnumerable<Event>> GetRegisteredEventsAsync(int userId)
-        {
-            return await _unitOfWork.Users.GetRegisteredEventsAsync(userId);
+            var users = await _unitOfWork.Users.GetAllUsersAsync();
+            return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
-        public async Task<User> GetUserByEmailAsync(string email)
+        public async Task<IEnumerable<EventDto>> GetRegisteredEventsAsync(int userId)
         {
-            return await _unitOfWork.Users.GetUserByEmailAsync(email);
+            var events = await _unitOfWork.Users.GetRegisteredEventsAsync(userId);
+            return _mapper.Map<IEnumerable<EventDto>>(events);
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<UserDto> GetUserByEmailAsync(string email)
         {
-            return await _unitOfWork.Users.GetUserByIdAsync(id);
+            var user = await _unitOfWork.Users.GetUserByEmailAsync(email);
+            return _mapper.Map<UserDto>(user);
+        }
+
+        public async Task<UserDto> GetUserByIdAsync(int id)
+        {
+            var user = await _unitOfWork.Users.GetUserByIdAsync(id);
+            return _mapper.Map<UserDto>(user);
         }
 
         public async Task<string> TryAuthenticateAsync(UserAuthDto loginDto) // тут нужно будет с токенами поработать
@@ -48,8 +57,9 @@ namespace EventsWebApplication.Server.Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<string> TryAddUserAsync(User user)
+        public async Task<string> TryAddUserAsync(UserCreateDto userCreateDto)
         {
+            var user = _mapper.Map<User>(userCreateDto);
             if(await _unitOfWork.Users.GetUserByEmailAsync(user.Email) == null)
             {
                 user.Password = _passwordHasher.HashPassword(user.Password);
@@ -60,8 +70,11 @@ namespace EventsWebApplication.Server.Application.Services
             return "NOT OK";
         }
 
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(UserUpdateDto userUpdateDto)
         {
+            var user = _mapper.Map<User>(userUpdateDto);
+            var oldUser = await _unitOfWork.Users.GetUserByIdAsync(user.Id);
+            user.Password = oldUser.Password;
             await _unitOfWork.Users.UpdateUserAsync(user);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -74,6 +87,25 @@ namespace EventsWebApplication.Server.Application.Services
                 await _unitOfWork.Events.UnregisterUserFromEventAsync(id, item.Id);
             }
             await _unitOfWork.Users.DeleteUserAsync(id);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<PagedResult<NotificationDto>> GetNotificationsAsync(int userId, int pageNumber, int pageSize)
+        {
+            var notifications = await _unitOfWork.Notifications.GetNotificationsAsync(userId, pageNumber, pageSize);
+            return _mapper.Map<PagedResult<NotificationDto>>(notifications);
+        }
+
+        public async Task AddNotificationAsync(NotificationDto notificationDto)
+        {
+            var notification = _mapper.Map<Notification>(notificationDto);
+            await _unitOfWork.Notifications.AddNotificationAsync(notification);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task DeleteNotificationAsync(int notificationId)
+        {
+            await _unitOfWork.Notifications.DeleteNotificationAsync(notificationId);
             await _unitOfWork.SaveChangesAsync();
         }
     }
