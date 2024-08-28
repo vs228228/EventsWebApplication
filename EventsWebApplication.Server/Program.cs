@@ -6,6 +6,7 @@ using EventsWebApplication.Server.Infrastructure.Data;
 using EventsWebApplication.Server.Infrastructure.Repositories;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace EventsWebApplication.Server
 {
@@ -38,6 +39,7 @@ namespace EventsWebApplication.Server
             builder.Services.AddScoped<IEventRepository, EventRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+            builder.Services.AddScoped<IFileService, FileService>();
 
 
             builder.Services.AddFluentValidation(config =>

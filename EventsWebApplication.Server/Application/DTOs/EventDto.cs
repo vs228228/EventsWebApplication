@@ -12,5 +12,6 @@ namespace EventsWebApplication.Server.Application.DTOs
         public string Type { get; set; }
         public int MaxPacticipants { get; set; }
         public ICollection<EventParticipant> Participants { get; set; }
+        public string ImagePath { get; set; }
     }
 }

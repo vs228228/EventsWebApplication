@@ -42,15 +42,16 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEvent([FromBody] EventCreateDto eventCreateDto)
+        public async Task<IActionResult> CreateEvent([FromForm] EventCreateDto eventCreateDto,  IFormFile photo)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            await _eventService.AddEventAsync(eventCreateDto);
+            await _eventService.AddEventAsync(eventCreateDto, photo);
             return Created();
         }
+
         [HttpPost("api/Events/registerForEvent")]
         public async Task<IActionResult> RegisterForEvent(int eventId, int userId)
         {
@@ -67,8 +68,8 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEvent([FromBody] EventUpdateDto eventUpdateDto)
+        [HttpPut]
+        public async Task<IActionResult> UpdateEvent([FromForm] EventUpdateDto eventUpdateDto,  IFormFile photo = null)
         {
             if (!ModelState.IsValid)
             {
@@ -76,13 +77,17 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             }
             try
             {
-                await _eventService.UpdateEventAsync(eventUpdateDto);
+                await _eventService.UpdateEventAsync(eventUpdateDto, photo);
                 return Ok();
             }
             catch (KeyNotFoundException)
             {
                 return NotFound();
             }
+            /*catch
+            {
+                return BadRequest();
+            }*/
         }
 
         [HttpDelete("{id}")]

@@ -10,7 +10,6 @@
         public string Type { get; set; }
         public int MaxPacticipants { get; set; }
         public ICollection<EventParticipant> Participants { get; set; }
-
-        // добавить фотку
+        public string ImagePath {  get; set; }
     }
 }

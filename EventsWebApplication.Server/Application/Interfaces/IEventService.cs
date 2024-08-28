@@ -10,8 +10,8 @@ namespace EventsWebApplication.Server.Application.Interfaces
         Task<IEnumerable<UserDto>> GetUsersByEventIdAsync(int eventId);
         Task RegisterUserForEventAsync(UserEventIdDto userEventInfo);
         Task UnregisterUserFromEventAsync(UserEventIdDto userEventInfo);
-        Task AddEventAsync(EventCreateDto eventObject);
-        Task UpdateEventAsync(EventUpdateDto eventObject);
+        Task AddEventAsync(EventCreateDto eventObject, IFormFile photo);
+        Task UpdateEventAsync(EventUpdateDto eventObject, IFormFile photo);
         Task DeleteEventAsync(int id);
     }
 }

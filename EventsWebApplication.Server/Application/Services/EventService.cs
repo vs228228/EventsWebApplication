@@ -11,15 +11,19 @@ namespace EventsWebApplication.Server.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         public readonly IMapper _mapper;
+        private readonly IFileService _fileService;
 
-        public EventService(IUnitOfWork unitOfWork, IMapper mapper)
+        public EventService(IUnitOfWork unitOfWork, IMapper mapper, IFileService fileSerivce)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _fileService = fileSerivce;
         }
-        public async Task AddEventAsync(EventCreateDto eventObject)
+        public async Task AddEventAsync(EventCreateDto eventObject, IFormFile photo)
         {
             Event eventEntity = _mapper.Map<Event>(eventObject);
+            var photoPath = await _fileService.SaveFileAsync(photo);
+            eventEntity.ImagePath = photoPath;
             await _unitOfWork.Events.AddEventAsync(eventEntity);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -39,18 +43,29 @@ namespace EventsWebApplication.Server.Application.Services
                 await _unitOfWork.Events.DeleteEventAsync(id);
                 await _unitOfWork.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch
             {
                 throw new KeyNotFoundException();
             }
         }
 
-        public async Task UpdateEventAsync(EventUpdateDto eventObject)
+        public async Task UpdateEventAsync(EventUpdateDto eventObject, IFormFile photo)
         {
-            Event eventEntity = _mapper.Map<Event>(eventObject);
-            await _unitOfWork.Events.UpdateEventAsync(eventEntity);
-            string message = $"Мероприятие {eventObject.Title} было изменено. Просьба проверить страницу мероприятия.";
-            await NotifyUsersOfChange(eventObject.Id, message);
+            
+            Event oldEvent = await _unitOfWork.Events.GetEventByIdAsync(eventObject.Id);
+            if (oldEvent == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            if (photo != null)
+            {
+                var photoPath = await _fileService.SaveFileAsync(photo);
+                oldEvent.ImagePath = photoPath;
+            }
+            _mapper.Map(eventObject, oldEvent);
+            await _unitOfWork.Events.UpdateEventAsync(oldEvent);
+            string message = $"Мероприятие {oldEvent.Title} было изменено. Просьба проверить страницу мероприятия.";
+            await NotifyUsersOfChange(oldEvent.Id, message);
             await _unitOfWork.SaveChangesAsync();
         }
 

@@ -62,7 +62,7 @@ namespace EventsWebApplication.Server.Application.Services
             var user = _mapper.Map<User>(userCreateDto);
             if(await _unitOfWork.Users.GetUserByEmailAsync(user.Email) == null)
             {
-                user.Password = _passwordHasher.HashPassword(user.Password);
+            //    user.Password = _passwordHasher.HashPassword(user.Password);
                 await _unitOfWork.Users.AddUserAsync(user);
                 await _unitOfWork.SaveChangesAsync();
                 return "OK";
@@ -72,9 +72,10 @@ namespace EventsWebApplication.Server.Application.Services
 
         public async Task UpdateUserAsync(UserUpdateDto userUpdateDto)
         {
-            var user = _mapper.Map<User>(userUpdateDto);
-            var oldUser = await _unitOfWork.Users.GetUserByIdAsync(user.Id);
-            user.Password = oldUser.Password;
+            /*var user = _mapper.Map<User>(userUpdateDto);
+            user.Password = oldUser.Password;*/
+            var entity = await _unitOfWork.Users.GetUserByIdAsync(userUpdateDto.Id);
+            var user = _mapper.Map(userUpdateDto, entity);
             await _unitOfWork.Users.UpdateUserAsync(user);
             await _unitOfWork.SaveChangesAsync();
         }
