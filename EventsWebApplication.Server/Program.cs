@@ -40,6 +40,7 @@ namespace EventsWebApplication.Server
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
             builder.Services.AddScoped<IFileService, FileService>();
+            builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 
             builder.Services.AddFluentValidation(config =>

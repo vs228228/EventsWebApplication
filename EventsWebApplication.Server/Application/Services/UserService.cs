@@ -14,10 +14,11 @@ namespace EventsWebApplication.Server.Application.Services
         private readonly IPasswordHasher _passwordHasher;
         private readonly IMapper _mapper;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IPasswordHasher passwordHasher)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _passwordHasher = passwordHasher;
         }
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
@@ -50,11 +51,11 @@ namespace EventsWebApplication.Server.Application.Services
             {
                 return "Wrong email";
             }
-            if(!_passwordHasher.VerifyPassword(user.Password, loginDto.UserPassword)) {
+            if(!await _passwordHasher.VerifyPassword(user.Password, loginDto.UserPassword)) {
                 return "Wrong password"; 
             }
-            return ""; // а тут выдавать токен
-            throw new NotImplementedException();
+            return "Yes yes yes"; // а тут выдавать токен
+        //    throw new NotImplementedException();
         }
 
         public async Task<string> TryAddUserAsync(UserCreateDto userCreateDto)
@@ -62,7 +63,7 @@ namespace EventsWebApplication.Server.Application.Services
             var user = _mapper.Map<User>(userCreateDto);
             if(await _unitOfWork.Users.GetUserByEmailAsync(user.Email) == null)
             {
-            //    user.Password = _passwordHasher.HashPassword(user.Password);
+                user.Password = await _passwordHasher.HashPassword(user.Password);
                 await _unitOfWork.Users.AddUserAsync(user);
                 await _unitOfWork.SaveChangesAsync();
                 return "OK";
