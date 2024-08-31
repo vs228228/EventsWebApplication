@@ -54,6 +54,8 @@ namespace EventsWebApplication.Server
                 config.RegisterValidatorsFromAssemblyContaining<DateOnlyDtoValidator>();
                 config.RegisterValidatorsFromAssemblyContaining<UserCreateDtoValidator>();
                 config.RegisterValidatorsFromAssemblyContaining<UserUpdateDtoValidator>();
+                config.RegisterValidatorsFromAssemblyContaining<EventUpdateDtoValidator>();
+                config.RegisterValidatorsFromAssemblyContaining<EventCreateDtoValidator>();
             });
 
             // jwt
