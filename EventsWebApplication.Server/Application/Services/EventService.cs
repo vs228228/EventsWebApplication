@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EventsWebApplication.Server.Application.DTOs;
 using EventsWebApplication.Server.Application.Interfaces;
+using EventsWebApplication.Server.Application.Pagination;
 using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
 using System.Linq;
@@ -85,6 +86,12 @@ namespace EventsWebApplication.Server.Application.Services
         {
             var users = await _unitOfWork.Events.GetUsersByEventIdAsync(eventId);
             return _mapper.Map<IEnumerable<UserDto>>(users);
+        }
+
+        public async Task<PagedResult<EventDto>> GetEventsAsync(int pageNumber, int pageSize)
+        {
+            var events = await _unitOfWork.Events.GetEvensAsync(pageNumber, pageSize);
+            return _mapper.Map<PagedResult<EventDto>>(events);
         }
 
         public async Task RegisterUserForEventAsync(UserEventIdDto userEventInfo) // сделать

@@ -10,6 +10,7 @@ namespace EventsWebApplication.Server.Application.Interfaces
         Task<UserDto> GetUserByEmailAsync(string email);
         Task<IEnumerable<EventDto>> GetRegisteredEventsAsync(int userId);
         Task<IEnumerable<UserDto>> GetAllUsersAsync();
+        Task<PagedResult<UserDto>> GetUsersAsync(int pageNumber, int pageSize);
         Task<string> TryAuthenticateAsync(UserAuthDto loginDto);
         Task<string> TryAddUserAsync(UserCreateDto user);
         Task UpdateUserAsync(UserUpdateDto user);

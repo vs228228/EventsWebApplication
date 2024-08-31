@@ -1,4 +1,5 @@
-﻿using EventsWebApplication.Server.Domain.Entities;
+﻿using EventsWebApplication.Server.Application.Pagination;
+using EventsWebApplication.Server.Domain.Entities;
 
 namespace EventsWebApplication.Server.Domain.Interfaces
 {
@@ -8,6 +9,7 @@ namespace EventsWebApplication.Server.Domain.Interfaces
         Task<User> GetUserByEmailAsync(string email);
         Task<IEnumerable<Event>> GetRegisteredEventsAsync(int userId);
         Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<PagedResult<User>> GetUsersAsync(int pageNumber, int pageSize);
         Task AddUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(int id);

@@ -16,7 +16,14 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllEvents()
+        public async Task<IActionResult> GetUsersAsync(int pageNumber, int pageSize)
+        {
+            var events = _eventService.GetEventsAsync(pageNumber, pageSize);
+            return Ok(events);
+        }
+
+        [HttpGet("getAll")]
+        public async Task<IActionResult> GetAllEventsAsync()
         {
 
             var events = await _eventService.GetAllEventsAsync();
@@ -24,7 +31,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEventById(int id)
+        public async Task<IActionResult> GetEventByIdAsync(int id)
         {
             var eventObject = await _eventService.GetEventByIdAsync(id);
             if(eventObject == null)
@@ -42,7 +49,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEvent([FromForm] EventCreateDto eventCreateDto,  IFormFile photo)
+        public async Task<IActionResult> CreateEventAsync([FromForm] EventCreateDto eventCreateDto,  IFormFile photo)
         {
             if(!ModelState.IsValid)
             {
@@ -53,7 +60,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpPost("api/Events/registerForEvent")]
-        public async Task<IActionResult> RegisterForEvent(int eventId, int userId)
+        public async Task<IActionResult> RegisterForEventAsync(int eventId, int userId)
         {
             var info = new UserEventIdDto() { EventId = eventId, UserId = userId };
             await _eventService.RegisterUserForEventAsync(info);
@@ -61,7 +68,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpPost("api/Events/unregisterForEvent")]
-        public async Task<IActionResult> UnregisterForEvent(int eventId, int userId)
+        public async Task<IActionResult> UnregisterForEventAsync(int eventId, int userId)
         {
             var info = new UserEventIdDto() { EventId = eventId, UserId = userId };
             await _eventService.UnregisterUserFromEventAsync(info);
@@ -69,7 +76,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateEvent([FromForm] EventUpdateDto eventUpdateDto,  IFormFile photo = null)
+        public async Task<IActionResult> UpdateEventAsync([FromForm] EventUpdateDto eventUpdateDto,  IFormFile photo = null)
         {
             if (!ModelState.IsValid)
             {
@@ -91,7 +98,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEvent(int id)
+        public async Task<IActionResult> DeleteEventAsync(int id)
         {
             try
             {

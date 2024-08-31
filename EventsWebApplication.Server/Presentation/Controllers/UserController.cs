@@ -9,7 +9,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         public UserController(IUserService userService)
         {
@@ -17,6 +17,13 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetUsersAsync(int pageNumber, int pageSize)
+        {
+            var users = await _userService.GetUsersAsync(pageNumber, pageSize);
+            return Ok(users);
+        }
+
+        [HttpGet("getAll")]
         public async Task<IActionResult> GetAllUsersAsync()
         {
             var users = await _userService.GetAllUsersAsync();
@@ -32,7 +39,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             {
                 return Ok(user);
             }
-            return BadRequest("User is not exist");
+            return NotFound("User is not exist");
         }
 
         [HttpGet("getByEmail/{email}")]
@@ -43,7 +50,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             {
                 return Ok(user);
             }
-            return BadRequest("User is not exist");
+            return NotFound("User is not exist");
         }
 
         [HttpGet("getRegisteredEvent/{id}")]
@@ -58,7 +65,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         {
             if(!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
             var notifications = await _userService.GetNotificationsAsync(userId, pageNumber, pageSize);
             return Ok(notifications);
@@ -80,11 +87,11 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUserAsync(UserCreateDto userCreateDto) // без хешера и токена не работает
+        public async Task<IActionResult> AddUserAsync([FromBody] UserCreateDto userCreateDto) // без хешера и токена не работает
         {
             if(!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
             string ans = await _userService.TryAddUserAsync(userCreateDto);
             if (ans == "OK") return Ok();
@@ -92,22 +99,22 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpPost("notification")]
-        public async Task<IActionResult> AddNotificationAsync(NotificationDto notificationDto)
+        public async Task<IActionResult> AddNotificationAsync([FromBody] NotificationDto notificationDto)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
             await _userService.AddNotificationAsync(notificationDto);
             return Ok();
         }
 
         [HttpPost("refreshToken")]
-        public async Task<IActionResult> RefreshTokenAsync([FromBody]GetTokenDto getTokenDto)
+        public async Task<IActionResult> RefreshTokenAsync([FromBody] GetTokenDto getTokenDto)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
             var tokens = await _userService.GenerateAccessToken(getTokenDto);
             if (tokens == null) return Unauthorized();
@@ -116,11 +123,11 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUserAsync(UserUpdateDto userUpdateDto) // надо исправить там фичи с паролями и нотификацией
+        public async Task<IActionResult> UpdateUserAsync([FromBody] UserUpdateDto userUpdateDto) // надо исправить там фичи с паролями и нотификацией
         {
             if(!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
             await _userService.UpdateUserAsync(userUpdateDto);
@@ -137,7 +144,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -151,7 +158,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

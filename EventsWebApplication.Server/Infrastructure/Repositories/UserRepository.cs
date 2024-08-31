@@ -1,4 +1,5 @@
-﻿using EventsWebApplication.Server.Domain.Entities;
+﻿using EventsWebApplication.Server.Application.Pagination;
+using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
 using EventsWebApplication.Server.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
         public async Task DeleteUserAsync(int id)
         {
             User user = await _context.Users.FindAsync(id);
-             _context.Users.Remove(user);
+            _context.Users.Remove(user);
         }
         public async Task UpdateUserAsync(User user)
         {
@@ -29,7 +30,7 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            return  _context.Users.ToList();
+            return _context.Users.ToList();
         }
 
         public async Task<IEnumerable<Event>> GetRegisteredEventsAsync(int userId)
@@ -50,5 +51,23 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
         {
             return await _context.Users.FindAsync(id);
         }
+
+        public async Task<PagedResult<User>> GetUsersAsync(int pageNumber, int pageSize)
+        {
+            var totalCount = await _context.Users.CountAsync();
+            var users = await _context.Users
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<User>
+            {
+                Items = users,
+                TotalCount = totalCount,
+                CurrentPage = pageNumber,
+                PageSize = pageSize
+            };
+        }
+
     }
 }

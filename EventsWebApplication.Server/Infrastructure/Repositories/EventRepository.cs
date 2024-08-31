@@ -1,4 +1,5 @@
-﻿using EventsWebApplication.Server.Domain.Entities;
+﻿using EventsWebApplication.Server.Application.Pagination;
+using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
 using EventsWebApplication.Server.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
         public async Task DeleteEventAsync(int id)
         {
             Event entity = await _context.Events.FindAsync(id);
-             _context.Events.Remove(entity);
+            _context.Events.Remove(entity);
         }
 
         public async Task UpdateEventAsync(Event eventOjbect)
@@ -41,9 +42,26 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
         public async Task<IEnumerable<User>> GetUsersByEventIdAsync(int eventId)
         {
             return await _context.Participants
-            .Where(ep => ep.EventId == eventId) 
+            .Where(ep => ep.EventId == eventId)
             .Select(ep => ep.User)
             .ToListAsync();
+        }
+
+        public async Task<PagedResult<Event>> GetEvensAsync(int pageNumber, int pageSize)
+        {
+            var totalCount = await _context.Events.CountAsync();
+            var events = await _context.Events
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<Event>
+            {
+                TotalCount = totalCount,
+                Items = events,
+                PageSize = pageSize,
+                CurrentPage = pageNumber
+            };
         }
 
         public async Task RegisterUserForEventAsync(int userId, int eventId)

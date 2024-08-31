@@ -46,6 +46,12 @@ namespace EventsWebApplication.Server.Application.Services
             return _mapper.Map<UserDto>(user);
         }
 
+        public async Task<PagedResult<UserDto>> GetUsersAsync(int pageNumber, int pageSize)
+        {
+            var users = await _unitOfWork.Users.GetUsersAsync(pageNumber, pageSize);
+            return _mapper.Map<PagedResult<UserDto>>(users);
+        }
+
         public async Task<string> TryAuthenticateAsync(UserAuthDto loginDto) // тут нужно будет с токенами поработать
         {
             User user = await _unitOfWork.Users.GetUserByEmailAsync(loginDto.UserEmail);

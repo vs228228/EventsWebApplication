@@ -1,4 +1,5 @@
-﻿using EventsWebApplication.Server.Domain.Entities;
+﻿using EventsWebApplication.Server.Application.Pagination;
+using EventsWebApplication.Server.Domain.Entities;
 
 namespace EventsWebApplication.Server.Domain.Interfaces
 {
@@ -6,11 +7,8 @@ namespace EventsWebApplication.Server.Domain.Interfaces
     {
         // к сожалению слово event зарезервированно, потому приходится вот так выкручиваться
         Task<Event> GetEventByIdAsync(int id);
-/*        Task<Event> GetEvetnsByTitleAsync(string title);
-        Task<Event> GetEventsByDataAsync(string data);
-        Task<Event> GetEventsByPlaceAsync(string place);
-        Task<Event> GetEventsByTypeAsync(string type);*/
         Task<IEnumerable<Event>> GetAllEventsAsync();
+        Task<PagedResult<Event>> GetEvensAsync(int pageNumber, int pageSize);
         Task<IEnumerable<User>> GetUsersByEventIdAsync(int eventId);
         Task RegisterUserForEventAsync(int userId, int eventId);
         Task UnregisterUserFromEventAsync(int userId, int eventId);
