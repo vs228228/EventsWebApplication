@@ -102,6 +102,19 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok();
         }
 
+        [HttpPost("refreshToken")]
+        public async Task<IActionResult> RefreshTokenAsync([FromBody]GetTokenDto getTokenDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var tokens = await _userService.GenerateAccessToken(getTokenDto);
+            if (tokens == null) return Unauthorized();
+            return Ok(tokens);
+            
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateUserAsync(UserUpdateDto userUpdateDto) // надо исправить там фичи с паролями и нотификацией
         {

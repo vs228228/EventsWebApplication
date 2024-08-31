@@ -13,12 +13,14 @@ namespace EventsWebApplication.Server.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IMapper _mapper;
+        private readonly ITokenManager _tokenManager;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IPasswordHasher passwordHasher)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IPasswordHasher passwordHasher, ITokenManager tokenManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
+            _tokenManager = tokenManager;
         }
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
@@ -54,7 +56,12 @@ namespace EventsWebApplication.Server.Application.Services
             if(!await _passwordHasher.VerifyPassword(user.Password, loginDto.UserPassword)) {
                 return "Wrong password"; 
             }
-            return "Yes yes yes"; // а тут выдавать токен
+           var token =  _tokenManager.GenerateRefreshToken();
+            user.RefreshToken = token.Token;
+            user.Expiration = token.Expiration;
+           await  _unitOfWork.SaveChangesAsync();
+           return token.Token;
+            
         //    throw new NotImplementedException();
         }
 
@@ -109,6 +116,26 @@ namespace EventsWebApplication.Server.Application.Services
         {
             await _unitOfWork.Notifications.DeleteNotificationAsync(notificationId);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<TokenDto> GenerateAccessToken(GetTokenDto getTokenDto)
+        {
+            var user = await _unitOfWork.Users.GetUserByIdAsync(getTokenDto.userId);
+            if (user == null || user.RefreshToken != getTokenDto.RefreshToken || user.Expiration < DateTime.Now)
+            {
+                return null;
+            }
+            var refreshToken = _tokenManager.GenerateRefreshToken();
+            user.RefreshToken = refreshToken.Token;
+            user.Expiration = refreshToken.Expiration;
+            var accesToken = _tokenManager.GenerateAccessToken(user);
+            TokenDto tokenDto = new TokenDto()
+            {
+                AccessToken = accesToken,
+                ResreshToken = refreshToken.Token
+            };
+            await _unitOfWork.SaveChangesAsync();
+            return tokenDto;
         }
     }
 }

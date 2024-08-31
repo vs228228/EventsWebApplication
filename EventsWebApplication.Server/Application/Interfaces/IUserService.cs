@@ -18,5 +18,6 @@ namespace EventsWebApplication.Server.Application.Interfaces
         Task<PagedResult<NotificationDto>> GetNotificationsAsync(int userId, int pageNumber, int pageSize);
         Task AddNotificationAsync(NotificationDto notificationDto);
         Task DeleteNotificationAsync(int notificationId);
+        Task<TokenDto> GenerateAccessToken(GetTokenDto getTokenDto);
     }
 }
