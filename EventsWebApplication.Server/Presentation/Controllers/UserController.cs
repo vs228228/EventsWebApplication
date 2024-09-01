@@ -1,5 +1,6 @@
 ﻿using EventsWebApplication.Server.Application.DTOs;
 using EventsWebApplication.Server.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -23,6 +24,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok(users);
         }
 
+        [Authorize]
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAllUsersAsync()
         {
@@ -83,7 +85,14 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             {
                 return BadRequest("Wrong password");
             }
-            return Ok(ans);
+            var user = await _userService.GetUserByEmailAsync(userAuthDto.UserEmail);
+            GetTokenDto getTokenDto = new GetTokenDto()
+            {
+                RefreshToken = ans,
+                userId = user.Id
+            };
+            var newAns = await _userService.GenerateAccessToken(getTokenDto);
+            return Ok(newAns);
         }
 
         [HttpPost]

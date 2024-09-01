@@ -63,7 +63,8 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         public async Task<IActionResult> RegisterForEventAsync(int eventId, int userId)
         {
             var info = new UserEventIdDto() { EventId = eventId, UserId = userId };
-            await _eventService.RegisterUserForEventAsync(info);
+            var ans = await _eventService.RegisterUserForEventAsync(info);
+            if(!ans) return BadRequest(new { message = "На мероприятие зарегистрировалось максимальное количество участников"}  );
             return Ok();
         }
 

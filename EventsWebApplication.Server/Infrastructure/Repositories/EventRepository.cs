@@ -72,12 +72,16 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
                 EventId = eventId,
                 RegistrationDate = DateTime.UtcNow
             };
+            var currentEvent = await _context.Events.FindAsync(eventId);
+            currentEvent.CountOfParticipants++;
            await _context.Participants.AddAsync(participant);
         }
 
         public async Task UnregisterUserFromEventAsync(int userId, int eventId)
         {
             EventParticipant entity = await _context.Participants.FindAsync(userId, eventId);
+            var currentEvent = await _context.Events.FindAsync(eventId);
+            currentEvent.CountOfParticipants--;
             _context.Participants.Remove(entity);
         }
     }

@@ -10,8 +10,8 @@ namespace EventsWebApplication.Server.Application.DTOs
         public DateTime DateAndTime { get; set; }
         public string Place { get; set; }
         public string Type { get; set; }
-        public int MaxPacticipants { get; set; }
-        public ICollection<EventParticipant> Participants { get; set; }
+        public int MaxParticipants { get; set; }
+        public int CountOfParticipants { get; set; }
         public string ImagePath { get; set; }
     }
 }

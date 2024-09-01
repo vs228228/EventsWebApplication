@@ -8,7 +8,8 @@
         public  DateTime DateAndTime{ get; set; }
         public string Place {  get; set; } // не присутстует в бд
         public string Type { get; set; }
-        public int MaxPacticipants { get; set; }
+        public int MaxParticipants { get; set; }
+        public int CountOfParticipants { get; set; }
         public ICollection<EventParticipant> Participants { get; set; }
         public string ImagePath {  get; set; }
     }

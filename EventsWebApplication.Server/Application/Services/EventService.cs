@@ -94,10 +94,13 @@ namespace EventsWebApplication.Server.Application.Services
             return _mapper.Map<PagedResult<EventDto>>(events);
         }
 
-        public async Task RegisterUserForEventAsync(UserEventIdDto userEventInfo) // сделать
+        public async Task<bool> RegisterUserForEventAsync(UserEventIdDto userEventInfo) // сделать
         {
+            var currentEvent = await _unitOfWork.Events.GetEventByIdAsync(userEventInfo.UserId);
+            if (currentEvent.CountOfParticipants >= currentEvent.MaxParticipants) return false;
             await _unitOfWork.Events.RegisterUserForEventAsync(userEventInfo.UserId, userEventInfo.EventId);
             await _unitOfWork.SaveChangesAsync();
+            return true;
         }
 
         public async Task UnregisterUserFromEventAsync(UserEventIdDto userEventInfo) // сделать
