@@ -49,7 +49,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEventAsync([FromForm] EventCreateDto eventCreateDto,  IFormFile photo)
+        public async Task<IActionResult> CreateEventAsync([FromForm] EventCreateDto eventCreateDto,  IFormFile photo = null)
         {
             if(!ModelState.IsValid)
             {

@@ -60,7 +60,8 @@ namespace EventsWebApplication.Server.Application.Services
             }
             if (photo != null)
             {
-                var photoPath = await _fileService.SaveFileAsync(photo);
+                var photoPath = await _fileService.SaveFileAsync(photo
+                    );
                 oldEvent.ImagePath = photoPath;
             }
             _mapper.Map(eventObject, oldEvent);
@@ -90,7 +91,7 @@ namespace EventsWebApplication.Server.Application.Services
 
         public async Task<PagedResult<EventDto>> GetEventsAsync(int pageNumber, int pageSize)
         {
-            var events = await _unitOfWork.Events.GetEvensAsync(pageNumber, pageSize);
+            var events = await _unitOfWork.Events.GetEventsAsync(pageNumber, pageSize);
             return _mapper.Map<PagedResult<EventDto>>(events);
         }
 

@@ -47,10 +47,16 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
             .ToListAsync();
         }
 
-        public async Task<PagedResult<Event>> GetEvensAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<Event>> GetEventsAsync(int pageNumber, int pageSize)
         {
-            var totalCount = await _context.Events.CountAsync();
-            var events = await _context.Events
+            var currentDateTime = DateTime.UtcNow;
+
+            var filteredEventsQuery = _context.Events
+                .Where(e => e.DateAndTime > currentDateTime); // Фильтруем только будущие мероприятия
+
+            var totalCount = await filteredEventsQuery.CountAsync();
+
+            var events = await filteredEventsQuery
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -63,6 +69,7 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
                 CurrentPage = pageNumber
             };
         }
+
 
         public async Task RegisterUserForEventAsync(int userId, int eventId)
         {

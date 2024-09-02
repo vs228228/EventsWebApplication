@@ -8,11 +8,12 @@ namespace EventsWebApplication.Server.Application.Services
 
         public async Task<string> SaveFileAsync(IFormFile file)
         {
-            if (file.Length <= 0) return "";
+            if (file == null || file.Length <= 0) return "/uploads/default.jpg";
 
             var fileName = file.FileName;
             var rootPath = Directory.GetCurrentDirectory();
             var filePath = Path.Combine(rootPath, "wwwroot/uploads", fileName);
+
 
 
             using (var stream = new FileStream(filePath, FileMode.Create))
