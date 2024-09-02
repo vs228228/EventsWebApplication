@@ -1,0 +1,33 @@
+<div *ngIf="isLoading" class="loading">
+  <div class="spinner"></div>
+  <p>Loading event details...</p>
+</div>
+
+<div *ngIf="!isLoading && event" class="event-details">
+  <mat-card class="event-card">
+    <mat-card-header>
+      <mat-card-title>{{ event.title }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="image-container">
+        <img [src]="getImageUrl(event.imagePath)" alt="{{ event.title }}" class="resized-image">
+      </div>
+      <p><strong>Дата и время:</strong> {{ event.dateAndTime | date: 'dd MMMM yyyy, HH:mm'}}</p>
+      <p><strong>Место:</strong> {{ event.place }}</p>
+      <p><strong>Тип события:</strong> {{ event.type }}</p>
+      <p><strong>Описание:</strong> {{ event.description }}</p>
+      <p><strong>Максимально участников:</strong> {{ event.maxParticipants }}</p>
+      <p><strong>Текущее количество участников:</strong> {{ event.countOfParticipants }}</p>
+      <div *ngIf="event.countOfParticipants >= event.maxParticipants" class="fully-booked">
+        <span>Все места заняты</span>
+      </div>
+      <button *ngIf="!(event.countOfParticipants >= event.maxParticipants)" mat-raised-button color="primary">
+        Зарегистрироваться
+      </button>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div *ngIf="errorMessage" class="error">
+  {{ errorMessage }}
+</div>

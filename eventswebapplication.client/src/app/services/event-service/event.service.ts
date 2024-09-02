@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PaginatedEvents } from '../../models/event.model';
+import { firstValueFrom } from 'rxjs';
+import { Event } from '../../models/event.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
-  private apiUrl = 'https://localhost:7059/api/Events';  // Замените на ваш URL
+  private apiUrl = 'https://localhost:7059/api/Events';
 
   constructor(private http: HttpClient) { }
 
@@ -19,5 +21,11 @@ export class EventService {
 
     let ans = this.http.get<PaginatedEvents>(this.apiUrl, { params });
     return ans;
+  }
+
+  getEventById(eventId: string): Promise<Event> {
+    const url = `${this.apiUrl}/${eventId}`;
+    return firstValueFrom(this.http.get<Event>(url))
+
   }
 }

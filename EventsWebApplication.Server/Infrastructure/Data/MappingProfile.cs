@@ -12,8 +12,8 @@ namespace EventsWebApplication.Server.Infrastructure.Data
             CreateMap<Event, EventDto>();
             CreateMap<EventDto, Event>();
             CreateMap<PagedResult<Event>, PagedResult<EventDto>>();
-            CreateMap<EventCreateDto, Event>();
             CreateMap<EventUpdateDto, Event>();
+            CreateMap<EventCreateDto, Event>();
             CreateMap<UserDto, User>();
             CreateMap<User, UserDto>();
             CreateMap<PagedResult<User>, PagedResult<UserDto>>();

@@ -54,7 +54,7 @@ namespace EventsWebApplication.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("EventsWebApplication.Server.Domain.Entities.EventParticipant", b =>
@@ -72,7 +72,7 @@ namespace EventsWebApplication.Server.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Participants");
+                    b.ToTable("Participants", (string)null);
                 });
 
             modelBuilder.Entity("EventsWebApplication.Server.Domain.Entities.Notification", b =>
@@ -95,7 +95,7 @@ namespace EventsWebApplication.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("EventsWebApplication.Server.Domain.Entities.User", b =>
@@ -135,7 +135,7 @@ namespace EventsWebApplication.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("EventsWebApplication.Server.Domain.Entities.EventParticipant", b =>

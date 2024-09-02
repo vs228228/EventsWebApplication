@@ -28,7 +28,7 @@ namespace EventsWebApplication.Server.Application.Validators
             RuleFor(x => x.Type)
                 .NotEmpty().WithMessage("Тип мероприятия не должен быть пустым");
 
-            RuleFor(x => x.MaxPacticipants)
+            RuleFor(x => x.MaxParticipants)
                 .NotEmpty().WithMessage("Количество участников не должно быть пустым")
                 .GreaterThan(1).WithMessage("Количество участников должно быть больше одного");
         }

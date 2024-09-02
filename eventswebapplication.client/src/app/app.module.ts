@@ -11,6 +11,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 import { AboutCompanyPageComponent } from './pages/about-company-page/about-company-page.component';
 import { EventCatalogPageComponent } from './pages/event-catalog-page/event-catalog-page.component';
+import { EventPageComponent } from './pages/event-page/event-page.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { EventCatalogPageComponent } from './pages/event-catalog-page/event-cata
     NavBarComponent,
     AuthPageComponent,
     AboutCompanyPageComponent,
-    EventCatalogPageComponent
+    EventCatalogPageComponent,
+    EventPageComponent
   ],
   imports: [
     MatButtonModule,
