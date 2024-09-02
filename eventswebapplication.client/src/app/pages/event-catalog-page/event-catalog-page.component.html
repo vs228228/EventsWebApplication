@@ -1,0 +1,30 @@
+<div class="search-container">
+  <input type="text" placeholder="Поиск мероприятий по названию" class="search-input">
+  <button class="search-button">Искать</button>
+</div>
+
+<div class="events-container">
+  <h1 class="header">Список мероприятий</h1>
+
+  <div class="event-cards-wrapper">
+    <mat-card *ngFor="let event of events">
+      <mat-card-header>
+        <img mat-card-image [src]="getImageUrl(event.imagePath)" class="resized-image" alt="{{event.title}}">
+        <mat-card-title>{{ event.title }}</mat-card-title>
+        <mat-card-subtitle>{{ event.dateAndTime | date:'fullDate' }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p *ngIf="event.description.length > 500">{{ event.description }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button [routerLink]="['/event', event.id]">Подробнее</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <mat-paginator [pageSize]="pageSize"
+                 [pageSizeOptions]="pageSizeOptions"
+                 [length]="totalEvents"
+                 (page)="onPageChanged($event)">
+  </mat-paginator>
+</div>
