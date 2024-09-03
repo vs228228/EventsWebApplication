@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDividerModule } from '@angular/material/divider';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -26,6 +27,7 @@ import { EventPageComponent } from './pages/event-page/event-page.component';
     MatButtonModule,
     MatPaginatorModule,
     MatCardModule,
+    MatDividerModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
