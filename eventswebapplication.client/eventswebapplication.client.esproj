@@ -9,8 +9,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\pages\" />
-    <Folder Include="src\app\models\" />
     <Folder Include="src\app\guard\" />
     <Folder Include="src\app\services\event-service\" />
+    <Folder Include="src\app\services\auth-service\" />
+    <Folder Include="src\app\interceptors\" />
   </ItemGroup>
 </Project>

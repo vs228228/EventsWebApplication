@@ -1,4 +1,4 @@
-.auth-container {
+.register-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,7 +6,7 @@
   background-color: #f0f0f0;
 }
 
-.auth-card {
+.register-card {
   width: 400px;
   padding: 20px;
 }
@@ -15,19 +15,8 @@
   width: 100%;
 }
 
-.auth-actions {
+.register-actions {
   margin-top: 20px;
   display: flex;
   justify-content: center;
 }
-
-.register-text {
-  text-align: center;
-  margin-top: 10px;
-}
-
-  .register-text a {
-    text-decoration: none;
-    color: #1976d2;
-    font-weight: bold;
-  }

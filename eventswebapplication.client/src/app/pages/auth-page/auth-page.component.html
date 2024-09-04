@@ -1,1 +1,30 @@
-<p>auth-page works!</p>
+<div class="auth-container">
+  <mat-card class="auth-card">
+    <mat-card-header>
+      <mat-card-title>Вход в аккаунт</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Электронная почта</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="Введите вашу почту">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Пароль</mat-label>
+          <input matInput formControlName="password" type="password" placeholder="Введите ваш пароль">
+        </mat-form-field>
+
+        <div class="auth-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="authForm.invalid" click="onSubmit()">Войти</button>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-footer>
+      <p class="register-text">
+        Нет аккаунта? <a routerLink="/register">Зарегистрируйтесь!</a>
+      </p>
+    </mat-card-footer>
+  </mat-card>
+</div>

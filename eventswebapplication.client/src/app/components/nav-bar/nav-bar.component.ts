@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { AuthService } from '../../services/auth-service/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -8,8 +9,8 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class NavBarComponent {
   showSignInButton = true;
-  showCabinetButton = false;
-  constructor(private router: Router) { }
+  showCabinetButton = true;
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
     this.router.events.subscribe(event => {
@@ -18,9 +19,26 @@ export class NavBarComponent {
       }
     });
     this.checkRoute();
+    this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+      this.checkForLogin(isLoggedIn)
+    });
+    this.authService.checkLoginStatus();
   }
 
   checkRoute(): void {
-    this.showSignInButton = this.router.url != '/auth';
+    this.showSignInButton = this.router.url != '/auth' && localStorage.getItem('isLoggedIn') !== 'true';
+  }
+
+  checkForLogin(isLoggedIn: boolean) {
+    if (isLoggedIn) {
+      this.showCabinetButton = true;
+    } else {
+      this.showCabinetButton = false;
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.checkRoute();
   }
 }
