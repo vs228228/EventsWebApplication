@@ -10,6 +10,5 @@ namespace EventsWebApplication.Server.Application.DTOs
         public string Email { get; set; }
         public DateOnly Birthday { get; set; }
         public bool IsAdmin { get; set; }
-        public string NotificationString { get; set; } = "";
     }
 }

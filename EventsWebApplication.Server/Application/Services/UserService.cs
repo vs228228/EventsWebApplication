@@ -138,7 +138,7 @@ namespace EventsWebApplication.Server.Application.Services
             TokenDto tokenDto = new TokenDto()
             {
                 AccessToken = accesToken,
-                ResreshToken = refreshToken.Token
+                RefreshToken = refreshToken.Token
             };
             await _unitOfWork.SaveChangesAsync();
             return tokenDto;
