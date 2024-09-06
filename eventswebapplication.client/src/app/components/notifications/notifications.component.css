@@ -1,0 +1,31 @@
+.notifications-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.notification-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.notification-text {
+  display: flex;
+  align-items: center;
+}
+
+mat-list-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.close-button {
+  align-self: flex-start;
+  padding-right: 8px;
+}
+
+mat-paginator {
+  margin-top: 20px;
+}

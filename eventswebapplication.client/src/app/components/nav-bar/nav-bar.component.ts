@@ -37,8 +37,8 @@ export class NavBarComponent {
     }
   }
 
-  logout() {
+  /*logout() {
     this.authService.logout();
     this.checkRoute();
-  }
+  }*/
 }

@@ -1,0 +1,27 @@
+<mat-card class="notifications-card">
+  <mat-card-header>
+    <mat-card-title>Уведомления</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngIf="notifications.length == 0">
+      <p>Нет доступных уведомлений</p>
+    </div>
+    <mat-list>
+      <mat-list-item *ngFor="let notification of notifications">
+        <!-- Контейнер для содержания уведомления -->
+        <div class="notification-container">
+          <!-- Текст уведомления -->
+          <div class="notification-text">
+            <mat-icon mat-list-icon>notifications</mat-icon>
+            <div>{{ notification.message }}</div>
+          </div>
+          <!-- Кнопка закрытия уведомления -->
+          <button mat-icon-button class="close-button" (click)="removeNotification(notification)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+    <mat-paginator [pageSize]="5" [length]="totalNotifications" (page)="onPageChange($event)"></mat-paginator>
+  </mat-card-content>
+</mat-card>
