@@ -23,7 +23,7 @@ export class EventService {
     return ans;
   }
 
-  getEventById(eventId: string): Promise<Event> {
+  async getEventById(eventId: string): Promise<Event> {
     const url = `${this.apiUrl}/${eventId}`;
     return firstValueFrom(this.http.get<Event>(url))
 

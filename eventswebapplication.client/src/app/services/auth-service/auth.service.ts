@@ -3,11 +3,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { AuthResponse } from '../../models/authRespons.model';
 import { Router } from '@angular/router';
-import { User } from '../../models/user.model';
+import { User, UserRegistration } from '../../models/user.model';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
+
 export class AuthService {
 
   private apiUrl = 'https://localhost:7059/api/User';
@@ -35,6 +37,18 @@ export class AuthService {
     }
     catch (error) {
       console.log(error);
+      return false;
+    }
+  }
+
+  async registerUser(userData: UserRegistration): Promise<boolean> {
+    try {
+      var response = await firstValueFrom(this.http.post<AuthResponse>(this.apiUrl, userData));
+      this.router.navigate(['/auth']);
+
+      return true;
+    } catch (error) {
+      console.error('Ошибка при регистрации:', error);
       return false;
     }
   }
@@ -70,6 +84,7 @@ export class AuthService {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userId');
     this.loggedIn.next(false);
   }
 
