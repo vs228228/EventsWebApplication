@@ -63,8 +63,8 @@ namespace EventsWebApplication.Server.Application.Services
                 return "Wrong password"; 
             }
            var token =  _tokenManager.GenerateRefreshToken();
-            user.RefreshToken = token.Token;
-            user.Expiration = token.Expiration;
+           user.RefreshToken = token.Token;
+           user.Expiration = token.Expiration;
            await  _unitOfWork.SaveChangesAsync();
            return token.Token;
             
@@ -77,6 +77,9 @@ namespace EventsWebApplication.Server.Application.Services
             if(await _unitOfWork.Users.GetUserByEmailAsync(user.Email) == null)
             {
                 user.Password = await _passwordHasher.HashPassword(user.Password);
+                var token = _tokenManager.GenerateRefreshToken();
+                user.RefreshToken = token.Token;
+                user.Expiration = token.Expiration;
                 await _unitOfWork.Users.AddUserAsync(user);
                 await _unitOfWork.SaveChangesAsync();
                 return "OK";

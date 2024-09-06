@@ -103,7 +103,8 @@ namespace EventsWebApplication.Server.Presentation.Controllers
                 return BadRequest(ModelState);
             }
             string ans = await _userService.TryAddUserAsync(userCreateDto);
-            if (ans == "OK") return Ok();
+            if (ans == "OK") return Ok(); 
+            
             return Conflict("Данный email уже зарегистрирован.");
         }
 
