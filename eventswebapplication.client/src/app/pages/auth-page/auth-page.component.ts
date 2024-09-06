@@ -25,8 +25,12 @@ export class AuthPageComponent {
   onSubmit() {
     if (this.authForm.valid) {
       const { email, password } = this.authForm.value;
-      var ans = this.tryEnterToSystem(email, password);
-      // Добавить логику если тру условно переход, если фолс, то тогда пишем, что логи и пассворт неверный
+      var ans = this.tryEnterToSystem(email, password)
+        .then(success => {
+          if (!success) {
+            alert("Неверный логин или пароль");
+          }
+        });
     }
   }
 }

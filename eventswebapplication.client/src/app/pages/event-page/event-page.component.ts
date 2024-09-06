@@ -12,6 +12,7 @@ export class EventPageComponent implements OnInit {
   event: Event | null = null;
   isLoading = true;
   errorMessage = '';
+  eventId: number | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,10 +24,11 @@ export class EventPageComponent implements OnInit {
   }
 
   async loadEvent(): Promise<void> {
-    const eventId = this.route.snapshot.paramMap.get('id');
-    if (eventId) {
+    const currentEventId = this.route.snapshot.paramMap.get('id');
+    this.eventId = Number(currentEventId);
+    if (this.eventId) {
       try {
-        this.event = await this.eventService.getEventById(eventId);
+        this.event = await this.eventService.getEventById(this.eventId.toString());
       } catch (error) {
         this.errorMessage = 'Error loading event details. Please try again later.';
         console.error('Error:', error);

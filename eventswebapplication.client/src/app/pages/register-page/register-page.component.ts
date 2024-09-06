@@ -1,15 +1,19 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth-service/auth.service';
+import { DatePipe } from '@angular/common';
+import { BirthdayDto, UserRegistration } from '../../models/user.model';
 
 @Component({
   selector: 'app-register-page',
   templateUrl: './register-page.component.html',
-  styleUrls: ['./register-page.component.css']
+  styleUrls: ['./register-page.component.css'],
+  providers: [DatePipe]
 })
 export class RegisterPageComponent {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private datePipe: DatePipe) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required]],
       surname: ['', [Validators.required]],
@@ -19,11 +23,37 @@ export class RegisterPageComponent {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.registerForm.valid) {
       const { name, surname, email, password, birthday } = this.registerForm.value;
-      console.log('Registration Data:', { name, surname, email, password, birthday });
-      // Добавить логику
+
+      const date = new Date(birthday);
+      const birthdayDto: BirthdayDto = {
+        year: date.getFullYear(),
+        month: date.getMonth() + 1,
+        day: date.getDate()
+      };
+
+      const userData: UserRegistration = {
+        name,
+        surname,
+        email,
+        password,
+        birthday: birthdayDto,
+        isAdmin: false 
+      };
+
+      try {
+        const success = await this.authService.registerUser(userData)
+          .then(success => {
+            if (success) {
+              alert("Успешная регистрация! Войдите в аккаунт, чтобы продолжить");
+            }
+          });
+        
+      } catch (error) {
+        console.error('Error during registration:', error);
+      }
     }
   }
 }

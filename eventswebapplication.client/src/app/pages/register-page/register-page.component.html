@@ -33,7 +33,7 @@
         </mat-form-field>
 
         <div class="register-actions">
-          <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">Зарегистрироваться</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid" (click)="onSubmit()">Зарегистрироваться</button>
         </div>
       </form>
     </mat-card-content>
