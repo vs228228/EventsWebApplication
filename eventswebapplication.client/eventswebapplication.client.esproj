@@ -13,5 +13,6 @@
     <Folder Include="src\app\services\event-service\" />
     <Folder Include="src\app\services\auth-service\" />
     <Folder Include="src\app\interceptors\" />
+    <Folder Include="src\app\services\user-service\" />
   </ItemGroup>
 </Project>
