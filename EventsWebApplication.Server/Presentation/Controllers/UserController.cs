@@ -109,7 +109,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpPost("notification")]
-        public async Task<IActionResult> AddNotificationAsync([FromBody] NotificationDto notificationDto)
+        public async Task<IActionResult> AddNotificationAsync([FromBody] NotificationCreateDto notificationDto)
         {
             if (!ModelState.IsValid)
             {

@@ -114,7 +114,7 @@ namespace EventsWebApplication.Server.Application.Services
             return _mapper.Map<PagedResult<NotificationDto>>(notifications);
         }
 
-        public async Task AddNotificationAsync(NotificationDto notificationDto)
+        public async Task AddNotificationAsync(NotificationCreateDto notificationDto)
         {
             var notification = _mapper.Map<Notification>(notificationDto);
             await _unitOfWork.Notifications.AddNotificationAsync(notification);

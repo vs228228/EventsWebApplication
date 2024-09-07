@@ -17,7 +17,7 @@ namespace EventsWebApplication.Server.Application.Interfaces
         Task DeleteUserAsync(int id);
 
         Task<PagedResult<NotificationDto>> GetNotificationsAsync(int userId, int pageNumber, int pageSize);
-        Task AddNotificationAsync(NotificationDto notificationDto);
+        Task AddNotificationAsync(NotificationCreateDto notificationDto);
         Task DeleteNotificationAsync(int notificationId);
         Task<TokenDto> GenerateAccessToken(GetTokenDto getTokenDto);
     }
