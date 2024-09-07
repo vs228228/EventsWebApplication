@@ -15,6 +15,7 @@ export class EventCatalogPageComponent implements OnInit {
   pageNumber: number = 1;
   pageSizeOptions: number[] = [6, 10, 20];
   totalEvents: number = 0;
+  searchString: string = ``;
 
   constructor(private eventService: EventService) { }
 
@@ -23,7 +24,8 @@ export class EventCatalogPageComponent implements OnInit {
   }
 
   loadEvents(pageNumber: number = this.pageNumber, pageSize: number = this.pageSize): void {
-    this.eventService.getEvents(pageNumber, pageSize).subscribe(
+    console.log(this.searchString);
+    this.eventService.getEvents(pageNumber, pageSize, this.searchString).subscribe(
       (response: any) => {
         var data = response.result;
         this.events = data.items;
@@ -40,6 +42,11 @@ export class EventCatalogPageComponent implements OnInit {
   onPageChanged(event: PageEvent): void {
     this.pageNumber = event.pageIndex + 1;
     this.pageSize = event.pageSize;
+    this.loadEvents(this.pageNumber, this.pageSize);
+  }
+
+  searchEvents(): void {
+    this.pageNumber = 1;
     this.loadEvents(this.pageNumber, this.pageSize);
   }
 }

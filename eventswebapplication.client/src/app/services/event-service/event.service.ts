@@ -14,10 +14,12 @@ export class EventService {
 
   constructor(private http: HttpClient) { }
 
-  getEvents(pageNumber: number, pageSize: number): Observable<PaginatedEvents> {
-    const params = new HttpParams()
+  getEvents(pageNumber: number, pageSize: number, searchString: string = ''): Observable<PaginatedEvents> {
+    var params = new HttpParams()
       .set('pageNumber', pageNumber.toString())
-      .set('pageSize', pageSize.toString());
+      .set('pageSize', pageSize.toString())
+      .set('searchString', searchString);
+ 
 
     let ans = this.http.get<PaginatedEvents>(this.apiUrl, { params });
     return ans;

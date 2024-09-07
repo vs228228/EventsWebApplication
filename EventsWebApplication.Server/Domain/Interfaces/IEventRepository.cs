@@ -8,7 +8,7 @@ namespace EventsWebApplication.Server.Domain.Interfaces
         // к сожалению слово event зарезервированно, потому приходится вот так выкручиваться
         Task<Event> GetEventByIdAsync(int id);
         Task<IEnumerable<Event>> GetAllEventsAsync();
-        Task<PagedResult<Event>> GetEventsAsync(int pageNumber, int pageSize);
+        Task<PagedResult<Event>> GetEventsAsync(int pageNumber, int pageSize, string searchString);
         Task<IEnumerable<User>> GetUsersByEventIdAsync(int eventId);
         Task RegisterUserForEventAsync(int userId, int eventId);
         Task UnregisterUserFromEventAsync(int userId, int eventId);

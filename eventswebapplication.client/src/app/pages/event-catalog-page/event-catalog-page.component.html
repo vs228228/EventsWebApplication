@@ -1,6 +1,6 @@
 <div class="search-container">
-  <input type="text" placeholder="Поиск мероприятий по названию" class="search-input">
-  <button class="search-button">Искать</button>
+  <input type="text" [(ngModel)]="searchString" placeholder="Поиск мероприятий по названию" class="search-input">
+  <button class="search-button" (click)="searchEvents()">Искать</button>
 </div>
 
 <div class="events-container">

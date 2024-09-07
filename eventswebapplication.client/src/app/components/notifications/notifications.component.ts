@@ -6,37 +6,46 @@ import { UserService } from '../../services/user-service/user.service';
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
-  styleUrl: './notifications.component.css'
+  styleUrls: ['./notifications.component.css']
 })
 export class NotificationsComponent implements OnInit {
   notifications: Notification[] = [];
-  totalNotifications = 0;
-  pageSize = 5;
+  totalNotifications = 0; 
+  pageSize = 5; 
+  pageIndex = 0; 
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.loadNotifications(1, this.pageSize);
+    this.loadNotifications(this.pageIndex, this.pageSize);
   }
 
   async loadNotifications(pageIndex: number, pageSize: number): Promise<void> {
+    const serverPageIndex = pageIndex + 1;
 
-    this.userService.getNotifications(pageIndex, pageSize)
-      .then(notifications => {
-        this.notifications = notifications.items;
-        this.totalNotifications = notifications.totalPages;
+    // Получаем уведомления с сервера
+    this.userService.getNotifications(serverPageIndex, pageSize)
+      .then(response => {
+        this.notifications = response.items;
+        this.totalNotifications = response.totalCount;
       })
+      .catch(error => {
+        console.error('Ошибка загрузки уведомлений:', error);
+      });
   }
 
   async removeNotification(notification: Notification): Promise<void> {
     await this.userService.deleteNotification(notification.id);
 
     this.notifications = this.notifications.filter(n => n.id !== notification.id);
+
     console.log(`Уведомление с ID ${notification.id} удалено`);
 
+    this.loadNotifications(this.pageIndex, this.pageSize);
   }
 
   onPageChange(event: PageEvent): void {
-    this.loadNotifications(event.pageIndex, event.pageSize);
+    this.pageIndex = event.pageIndex; 
+    this.loadNotifications(this.pageIndex, event.pageSize);
   }
 }

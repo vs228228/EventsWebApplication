@@ -5,6 +5,7 @@ using EventsWebApplication.Server.Application.Pagination;
 using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
 using System.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EventsWebApplication.Server.Application.Services
 {
@@ -89,9 +90,9 @@ namespace EventsWebApplication.Server.Application.Services
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
-        public async Task<PagedResult<EventDto>> GetEventsAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<EventDto>> GetEventsAsync(int pageNumber, int pageSize, string searchString)
         {
-            var events = await _unitOfWork.Events.GetEventsAsync(pageNumber, pageSize);
+            var events = await _unitOfWork.Events.GetEventsAsync(pageNumber, pageSize, searchString);
             return _mapper.Map<PagedResult<EventDto>>(events);
         }
 

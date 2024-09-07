@@ -13,6 +13,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -54,6 +55,7 @@ import { UserEventsComponent } from './components/user-events/user-events.compon
     MatIconModule,
     MatIconButton,
     MatGridListModule,
+    FormsModule,
     ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,

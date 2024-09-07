@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { User } from '../../models/user.model';
 import { firstValueFrom } from 'rxjs';
 import { PaginatedNotifications } from '../../models/notification.model';
+import { Event } from '../../models/event.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,13 @@ export class UserService {
     const url = `${this.apiUrl}/getByEmail/${encodeURIComponent(String(email))}`
     var user = await firstValueFrom(this.http.get<User>(url));
     return await firstValueFrom(this.http.get<User>(url));
+  }
+
+  async getRegisteredEvent(userId: number): Promise<Event[]> {
+    var url = `${this.apiUrl}/getRegisteredEvent/${encodeURIComponent(String(userId))}`;
+
+    let ans = firstValueFrom(this.http.get<Event[]>(url));
+    return ans;
   }
 
   async getNotifications(pageNumber: number, pageSize: number): Promise<PaginatedNotifications> {

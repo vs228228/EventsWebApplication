@@ -16,9 +16,9 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsersAsync(int pageNumber, int pageSize)
+        public async Task<IActionResult> GetUsersAsync(int pageNumber, int pageSize, string searchString = "")
         {
-            var events = _eventService.GetEventsAsync(pageNumber, pageSize);
+            var events = _eventService.GetEventsAsync(pageNumber, pageSize, searchString);
             return Ok(events);
         }
 

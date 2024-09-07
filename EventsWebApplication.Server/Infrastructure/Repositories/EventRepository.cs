@@ -47,12 +47,18 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
             .ToListAsync();
         }
 
-        public async Task<PagedResult<Event>> GetEventsAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<Event>> GetEventsAsync(int pageNumber, int pageSize, string searchString)
         {
             var currentDateTime = DateTime.UtcNow;
 
             var filteredEventsQuery = _context.Events
-                .Where(e => e.DateAndTime > currentDateTime); // Фильтруем только будущие мероприятия
+                .Where(e => e.DateAndTime > currentDateTime);
+
+            if(!string.IsNullOrEmpty(searchString))
+{
+                filteredEventsQuery = filteredEventsQuery
+                 .Where(e => e.Title.Contains(searchString));
+            }
 
             var totalCount = await filteredEventsQuery.CountAsync();
 
