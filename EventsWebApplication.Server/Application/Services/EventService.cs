@@ -96,19 +96,26 @@ namespace EventsWebApplication.Server.Application.Services
             return _mapper.Map<PagedResult<EventDto>>(events);
         }
 
-        public async Task<bool> RegisterUserForEventAsync(UserEventIdDto userEventInfo) // сделать
+        public async Task<bool> RegisterUserForEventAsync(UserEventIdDto userEventInfo)
         {
             var currentEvent = await _unitOfWork.Events.GetEventByIdAsync(userEventInfo.UserId);
-            if (currentEvent.CountOfParticipants >= currentEvent.MaxParticipants) return false;
+            if (currentEvent == null || currentEvent.CountOfParticipants >= currentEvent.MaxParticipants) return false;
             await _unitOfWork.Events.RegisterUserForEventAsync(userEventInfo.UserId, userEventInfo.EventId);
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
 
-        public async Task UnregisterUserFromEventAsync(UserEventIdDto userEventInfo) // сделать
+        public async Task UnregisterUserFromEventAsync(UserEventIdDto userEventInfo)
         {
             await _unitOfWork.Events.UnregisterUserFromEventAsync(userEventInfo.UserId, userEventInfo.EventId);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsUserRegisterToEvent(UserEventIdDto userEventInfo)
+        {
+            var user = await _unitOfWork.Events.IsUserRegisterToEvent(userEventInfo.EventId, userEventInfo.UserId);
+            if (user == null) return false;
+            return true;
         }
 
         private async Task NotifyUsersOfChange(int eventId, string message)

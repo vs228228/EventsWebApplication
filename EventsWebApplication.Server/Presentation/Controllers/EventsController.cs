@@ -41,7 +41,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok(eventObject);
         }
 
-        [HttpGet("api/Events/usersByEvent")]
+        [HttpGet("usersByEvent")]
         public async Task<IActionResult> GetUsersByEventIdAsync(int eventId)
         {
             var users = await _eventService.GetUsersByEventIdAsync(eventId);
@@ -59,21 +59,26 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Created();
         }
 
-        [HttpPost("api/Events/registerForEvent")]
-        public async Task<IActionResult> RegisterForEventAsync(int eventId, int userId)
+        [HttpPost("registerForEvent")]
+        public async Task<IActionResult> RegisterForEventAsync(UserEventIdDto userEventIdDto)
         {
-            var info = new UserEventIdDto() { EventId = eventId, UserId = userId };
-            var ans = await _eventService.RegisterUserForEventAsync(info);
+            var ans = await _eventService.RegisterUserForEventAsync(userEventIdDto);
             if(!ans) return BadRequest(new { message = "На мероприятие зарегистрировалось максимальное количество участников"}  );
             return Ok();
         }
 
-        [HttpPost("api/Events/unregisterForEvent")]
-        public async Task<IActionResult> UnregisterForEventAsync(int eventId, int userId)
+        [HttpPost("unregisterFromEvent")]
+        public async Task<IActionResult> UnregisterForEventAsync(UserEventIdDto userEventIdDto)
         {
-            var info = new UserEventIdDto() { EventId = eventId, UserId = userId };
-            await _eventService.UnregisterUserFromEventAsync(info);
+            await _eventService.UnregisterUserFromEventAsync(userEventIdDto);
             return Ok();
+        }
+
+        [HttpPost("isUserRegisterToEvent")]
+        public async Task<IActionResult> IsUserRegisterToEvent(UserEventIdDto userEventId)
+        {
+            var ans = await _eventService.IsUserRegisterToEvent(userEventId);
+            return Ok(ans);
         }
 
         [HttpPut]

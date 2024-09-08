@@ -18,12 +18,33 @@
       <p><strong>Описание:</strong> {{ event.description }}</p>
       <p><strong>Максимально участников:</strong> {{ event.maxParticipants }}</p>
       <p><strong>Текущее количество участников:</strong> {{ event.countOfParticipants }}</p>
-      <div *ngIf="event.countOfParticipants >= event.maxParticipants" class="fully-booked">
-        <span>Все места заняты</span>
+
+      <!-- Если мероприятие уже прошло -->
+      <div *ngIf="hasEventPassed()" class="event-passed">
+        <span>Мероприятие прошло</span>
       </div>
-      <button *ngIf="!(event.countOfParticipants >= event.maxParticipants)" mat-raised-button color="primary">
-        Зарегистрироваться
-      </button>
+
+      <!-- Если мероприятие не прошло -->
+      <ng-container *ngIf="!hasEventPassed() || isUserRegistered">
+        <!-- Если все места заняты и пользователь не зарегистрирован -->
+        <div *ngIf="event.countOfParticipants >= event.maxParticipants && !isUserRegistered" class="fully-booked">
+          <span>Все места заняты</span>
+        </div>
+
+        <!-- Если есть места и пользователь не зарегистрирован -->
+        <button *ngIf="!isUserRegistered && event.countOfParticipants < event.maxParticipants"
+                mat-raised-button color="primary"
+                (click)="registerForEvent(event.id)">
+          Зарегистрироваться
+        </button>
+
+        <!-- Если пользователь зарегистрирован, показывать кнопку "Отменить регистрацию" -->
+        <button *ngIf="isUserRegistered"
+                mat-raised-button color="warn"
+                (click)="unregisterFromEvent(event.id)">
+          Отменить регистрацию
+        </button>
+      </ng-container>
     </mat-card-content>
   </mat-card>
 </div>

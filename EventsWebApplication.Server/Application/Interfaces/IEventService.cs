@@ -10,6 +10,7 @@ namespace EventsWebApplication.Server.Application.Interfaces
         Task<IEnumerable<EventDto>> GetAllEventsAsync();
         Task<IEnumerable<UserDto>> GetUsersByEventIdAsync(int eventId);
         Task<PagedResult<EventDto>> GetEventsAsync(int pageNumber, int pageSize, string searchString);
+        Task<bool> IsUserRegisterToEvent(UserEventIdDto userEventId);
         Task<bool> RegisterUserForEventAsync(UserEventIdDto userEventInfo);
         Task UnregisterUserFromEventAsync(UserEventIdDto userEventInfo);
         Task AddEventAsync(EventCreateDto eventObject, IFormFile photo);

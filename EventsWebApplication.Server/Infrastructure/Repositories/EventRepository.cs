@@ -97,5 +97,14 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
             currentEvent.CountOfParticipants--;
             _context.Participants.Remove(entity);
         }
+
+        public async Task<User?> IsUserRegisterToEvent(int eventId, int userId)
+        {
+            var ans = await _context.Participants
+            .Where(ep => ep.EventId == eventId && ep.UserId == userId)
+            .Select(ep => ep.User)
+            .FirstOrDefaultAsync();
+            return ans;
+        }
     }
 }

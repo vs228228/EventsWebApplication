@@ -30,4 +30,30 @@ export class EventService {
     return firstValueFrom(this.http.get<Event>(url))
 
   }
+  async registerUserForEvent(eventId: number): Promise<void> {
+    const userId = localStorage.getItem('userId');
+    await this.http.post(`${this.apiUrl}/registerForEvent`, { eventId, userId }).toPromise();
+  }
+
+  async unregisterUserFromEvent(eventId: number): Promise<void> {
+    const userId = localStorage.getItem('userId');
+    await this.http.post(`${this.apiUrl}/unregisterFromEvent`, { eventId, userId }).toPromise();
+  }
+
+  async checkUserRegistration(eventId: number, userId: number): Promise<boolean> {
+    try {
+     /*const params = { userId, eventId };
+      *//*var params = new HttpParams()
+        .set(`userId`, userId)
+        .set(`eventId`, eventId)*/
+      const ans = await firstValueFrom(
+        this.http.post<boolean>(`${this.apiUrl}/isUserRegisterToEvent`, { userId, eventId })
+      );
+      return ans !== undefined ? ans : false;
+    } catch (error) {
+      console.error('Ошибка при проверке регистрации пользователя:', error);
+      return false;
+    }
+  }
+
 }

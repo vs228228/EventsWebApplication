@@ -14,7 +14,7 @@ export class AuthService {
 
   private apiUrl = 'https://localhost:7059/api/User';
 
-  private loggedIn = new BehaviorSubject<boolean>(false); // начальное состояние
+  private loggedIn = new BehaviorSubject<boolean>(false);
 
   isLoggedIn$ = this.loggedIn.asObservable();
   constructor(private http: HttpClient, private router: Router) { }
@@ -31,6 +31,7 @@ export class AuthService {
       var user = await firstValueFrom(this.http.get<User>(newUrl));
       console.log(user);
       localStorage.setItem('userId', user.id.toString());
+      localStorage.setItem('isAdmin', user.isAdmin.toString());
       this.loggedIn.next(true);
       this.router.navigate(['']);
       return true;
@@ -75,7 +76,7 @@ export class AuthService {
 
       return true;
     } catch (error) {
-      console.error('Ошибка при обновлении токенов:', error);6
+      console.error('Ошибка при обновлении токенов:', error);
       return false;
     }
   }
@@ -85,6 +86,7 @@ export class AuthService {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('userId');
+    localStorage.removeItem('isAdmin');
     this.loggedIn.next(false);
   }
 
