@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PaginatedEvents } from '../../models/event.model';
+import { EventToServer, PaginatedEvents } from '../../models/event.model';
 import { firstValueFrom } from 'rxjs';
 import { Event } from '../../models/event.model';
 
@@ -13,6 +13,10 @@ export class EventService {
   private apiUrl = 'https://localhost:7059/api/Events';
 
   constructor(private http: HttpClient) { }
+
+  updateEvent(formData: FormData){
+    return this.http.put<void>(this.apiUrl, formData);
+  }
 
   getEvents(pageNumber: number, pageSize: number, searchString: string = ''): Observable<PaginatedEvents> {
     var params = new HttpParams()
@@ -25,19 +29,28 @@ export class EventService {
     return ans;
   }
 
+  createEvent(formData: FormData){
+    return this.http.post<void>(this.apiUrl, formData);
+  }
+
+  deleteEvent(id: number) {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
   async getEventById(eventId: string): Promise<Event> {
     const url = `${this.apiUrl}/${eventId}`;
     return firstValueFrom(this.http.get<Event>(url))
 
   }
+
   async registerUserForEvent(eventId: number): Promise<void> {
     const userId = localStorage.getItem('userId');
-    await this.http.post(`${this.apiUrl}/registerForEvent`, { eventId, userId }).toPromise();
+    await this.http.post(`${this.apiUrl}/registerForEvent`, { userId, eventId }).toPromise();
   }
 
   async unregisterUserFromEvent(eventId: number): Promise<void> {
     const userId = localStorage.getItem('userId');
-    await this.http.post(`${this.apiUrl}/unregisterFromEvent`, { eventId, userId }).toPromise();
+    await this.http.post(`${this.apiUrl}/unregisterFromEvent`, { userId, eventId }).toPromise();
   }
 
   async checkUserRegistration(eventId: number, userId: number): Promise<boolean> {

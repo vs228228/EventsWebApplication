@@ -1,0 +1,84 @@
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 40px;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 24px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  width: 80%;
+}
+
+.search-button {
+  padding: 10px 20px;
+  font-size: 20px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+  .search-button:hover {
+    background-color: #1565c0;
+  }
+
+.create-button {
+  padding: 10px 20px;
+  font-size: 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+  .create-button:hover {
+    background-color: #388e3c;
+  }
+
+.events-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.event-cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+}
+
+mat-card {
+  flex: 1 1 calc(50% - 16px);
+  box-sizing: border-box;
+  max-width: calc(50% - 16px);
+}
+
+.event-cards-wrapper mat-card:nth-last-child(2n+1) {
+  flex: 1 1 100%;
+}
+
+.resized-image {
+  width: 200px;
+  height: 200px;
+  margin-left: auto;
+}

@@ -18,3 +18,14 @@ export interface Event {
   countOfParticipants: number;
   type: string;
 }
+
+export interface EventToServer {
+  id: number;
+  title: string;
+  description: string;
+  dateAndTime: string;
+  place: string;
+  imageFile: File | null;
+  maxParticipants: number;
+  type: string;
+}

@@ -1,10 +1,11 @@
 <div class="search-container">
-  <input type="text" [(ngModel)]="searchString" placeholder="Поиск мероприятий по названию" class="search-input">
+  <input type="text" [(ngModel)]="searchId" placeholder="Поиск мероприятий по ID" class="search-input">
   <button class="search-button" (click)="searchEvents()">Искать</button>
+  <button class="create-button" (click)="openCreateEventDialog()">Создать мероприятие</button>
 </div>
 
 <div class="events-container">
-  <h1 class="header">Список мероприятий</h1>
+  <h1 class="header">Панель администратора</h1>
 
   <div class="event-cards-wrapper">
     <mat-card *ngFor="let event of events">
@@ -14,7 +15,8 @@
         <mat-card-subtitle>{{ event.dateAndTime | date:'fullDate' }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-actions>
-        <button mat-button [routerLink]="['/event', event.id]">Подробнее</button>
+        <button mat-button (click)="openEditEventDialog(event)">Редактировать</button>
+        <button mat-button (click)="deleteEvent(event.id)">Удалить</button>
       </mat-card-actions>
     </mat-card>
   </div>

@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth-service/auth.service';
 export class NavBarComponent {
   showSignInButton = true;
   showCabinetButton = true;
+  isAdmin = false;
   constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
@@ -35,10 +36,7 @@ export class NavBarComponent {
     } else {
       this.showCabinetButton = false;
     }
-  }
+    this.isAdmin = localStorage.getItem(`isAdmin`) == 'true';
 
-  /*logout() {
-    this.authService.logout();
-    this.checkRoute();
-  }*/
+  }
 }

@@ -1,0 +1,49 @@
+<div class="edit-event-overlay" (click)="closeDialog()">
+  <div class="edit-event-container" (click)="$event.stopPropagation()">
+    <!-- Кнопка закрыть (крестик) -->
+    <button class="close-button" (click)="closeDialog()">X</button>
+
+    <h2>Редактировать мероприятие</h2>
+
+    <!-- Форма редактирования мероприятия -->
+    <form (ngSubmit)="saveEvent()">
+      <div class="form-group">
+        <label for="title">Название</label>
+        <input id="title" [(ngModel)]="event.title" name="title" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Описание</label>
+        <textarea id="description" [(ngModel)]="event.description" name="description" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="dateAndTime">Дата и время</label>
+        <input type="datetime-local" id="dateAndTime" [(ngModel)]="event.dateAndTime" name="dateAndTime" required>
+      </div>
+
+      <div class="form-group">
+        <label for="place">Место проведения</label>
+        <input id="place" [(ngModel)]="event.place" name="place" required>
+      </div>
+
+      <div class="form-group">
+        <label for="type">Тип мероприятия</label>
+        <input id="type" [(ngModel)]="event.type" name="type" required>
+      </div>
+
+      <div class="form-group">
+        <label for="maxParticipants">Максимальное количество участников</label>
+        <input type="number" id="maxParticipants" [(ngModel)]="event.maxParticipants" name="maxParticipants" required>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Выбрать изображение</label>
+        <input type="file" id="image" (change)="onFileChange($event)" accept="image/*">
+      </div>
+
+      <!-- Кнопка для сохранения изменений -->
+      <button type="submit">Сохранить</button>
+    </form>
+  </div>
+</div>

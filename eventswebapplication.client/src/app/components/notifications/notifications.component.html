@@ -8,14 +8,11 @@
     </div>
     <mat-list>
       <mat-list-item *ngFor="let notification of notifications">
-        <!-- Контейнер для содержания уведомления -->
         <div class="notification-container">
-          <!-- Текст уведомления -->
           <div class="notification-text">
             <mat-icon mat-list-icon>notifications</mat-icon>
             <div>{{ notification.message }}</div>
           </div>
-          <!-- Кнопка закрытия уведомления -->
           <button mat-icon-button class="close-button" (click)="removeNotification(notification)">
             <mat-icon>close</mat-icon>
           </button>

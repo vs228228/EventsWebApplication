@@ -44,8 +44,7 @@ export class AuthService {
 
   async registerUser(userData: UserRegistration): Promise<boolean> {
     try {
-      var response = await firstValueFrom(this.http.post<AuthResponse>(this.apiUrl, userData));
-      this.router.navigate(['/auth']);
+      var response = firstValueFrom(this.http.post<void>(this.apiUrl, userData));
 
       return true;
     } catch (error) {

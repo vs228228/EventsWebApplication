@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { DatePipe } from '@angular/common';
 import { BirthdayDto, UserRegistration } from '../../models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-page',
@@ -13,7 +14,7 @@ import { BirthdayDto, UserRegistration } from '../../models/user.model';
 export class RegisterPageComponent {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private datePipe: DatePipe) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private datePipe: DatePipe,private router: Router) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required]],
       surname: ['', [Validators.required]],
@@ -48,6 +49,7 @@ export class RegisterPageComponent {
           .then(success => {
             if (success) {
               alert("Успешная регистрация! Войдите в аккаунт, чтобы продолжить");
+              this.router.navigate(['/auth']);
             }
           });
         

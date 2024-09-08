@@ -60,13 +60,13 @@ export class EventPageComponent implements OnInit {
     if (!isLoggedIn) {
       this.router.navigate(['/auth']);
     } else {
-      await this.eventService.registerUserForEvent(Number(this.eventId));
+      await this.eventService.registerUserForEvent(id);
       this.isUserRegistered = true; 
     }
   }
 
   async unregisterFromEvent(id: number): Promise<void> {
-    await this.eventService.unregisterUserFromEvent(Number(this.eventId));
+    await this.eventService.unregisterUserFromEvent(id);
     this.isUserRegistered = false; 
   }
 

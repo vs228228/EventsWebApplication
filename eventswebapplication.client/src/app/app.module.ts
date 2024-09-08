@@ -13,6 +13,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -27,6 +30,9 @@ import { AccountPageComponent } from './pages/account-page/account-page.componen
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { UserEventsComponent } from './components/user-events/user-events.component';
+import { AdminPanelPageComponent } from './pages/admin-panel-page/admin-panel-page.component';
+import { EditEventComponent } from './components/edit-event/edit-event.component';
+import { CreateEventComponent } from './components/create-event/create-event.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +47,9 @@ import { UserEventsComponent } from './components/user-events/user-events.compon
     UserProfileComponent,
     NotificationsComponent,
     UserEventsComponent,
+    AdminPanelPageComponent,
+    EditEventComponent,
+    CreateEventComponent,
   ],
   imports: [
     MatButtonModule,
@@ -55,6 +64,9 @@ import { UserEventsComponent } from './components/user-events/user-events.compon
     MatIconModule,
     MatIconButton,
     MatGridListModule,
+    MatTableModule,
+    MatDialogModule,
+    MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,

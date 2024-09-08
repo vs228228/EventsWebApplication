@@ -15,7 +15,6 @@ namespace EventsWebApplication.Server.Application.Validators
 
             RuleFor(x => x.Description)
                 .NotEmpty().WithMessage("Описание не может быть пустым")
-                .MinimumLength(50).WithMessage("Описание не может быть меньше 100 символов")
                 .MaximumLength(2500).WithMessage("Описание не может быть больше 2500 символов"); // это примерно 420 слов и одна страница, так что этого должно хватить
 
             RuleFor(x => x.DateAndTime)

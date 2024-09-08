@@ -24,7 +24,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok(users);
         }
 
-        [Authorize]
+      //  [Authorize]
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAllUsersAsync()
         {

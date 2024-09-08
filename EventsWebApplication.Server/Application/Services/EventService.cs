@@ -67,7 +67,7 @@ namespace EventsWebApplication.Server.Application.Services
             }
             _mapper.Map(eventObject, oldEvent);
             await _unitOfWork.Events.UpdateEventAsync(oldEvent);
-            string message = $"Мероприятие {oldEvent.Title} было изменено. Просьба проверить страницу мероприятия.";
+            string message = $"Мероприятие {oldEvent.Title} было изменено.";
             await NotifyUsersOfChange(oldEvent.Id, message);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -98,7 +98,7 @@ namespace EventsWebApplication.Server.Application.Services
 
         public async Task<bool> RegisterUserForEventAsync(UserEventIdDto userEventInfo)
         {
-            var currentEvent = await _unitOfWork.Events.GetEventByIdAsync(userEventInfo.UserId);
+            var currentEvent = await _unitOfWork.Events.GetEventByIdAsync(userEventInfo.EventId);
             if (currentEvent == null || currentEvent.CountOfParticipants >= currentEvent.MaxParticipants) return false;
             await _unitOfWork.Events.RegisterUserForEventAsync(userEventInfo.UserId, userEventInfo.EventId);
             await _unitOfWork.SaveChangesAsync();

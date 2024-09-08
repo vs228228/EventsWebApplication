@@ -6,6 +6,7 @@ import { EventCatalogPageComponent } from './pages/event-catalog-page/event-cata
 import { EventPageComponent } from './pages/event-page/event-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { AccountPageComponent } from './pages/account-page/account-page.component';
+import { AdminPanelPageComponent } from './pages/admin-panel-page/admin-panel-page.component';
 
 const routes: Routes = [
   { path: '', component: EventCatalogPageComponent },
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'about-company', component: AboutCompanyPageComponent },
   { path: 'event/:id', component: EventPageComponent },
   { path: `register`, component: RegisterPageComponent },
-  { path: 'account', component: AccountPageComponent }
+  { path: 'account', component: AccountPageComponent },
+  { path: 'adminPanel', component: AdminPanelPageComponent }
 ];
 
 @NgModule({

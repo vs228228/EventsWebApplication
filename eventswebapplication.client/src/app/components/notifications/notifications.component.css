@@ -2,28 +2,37 @@
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .notification-container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  padding: 8px;
+  box-sizing: border-box;
   width: 100%;
+  position: relative;
 }
 
 .notification-text {
-  display: flex;
-  align-items: center;
+  flex: 1;
+  margin-right: 40px; /* Убедитесь, что отступ для кнопки достаточно большой */
+  word-break: break-word;
+}
+
+.close-button {
+  position: absolute;
+  right: 8px; /* Положение кнопки справа */
+  top: 50%; /* Выравнивание по вертикали */
+  transform: translateY(-50%); /* Центрирование по вертикали */
+  width: 24px;
+  height: 24px;
 }
 
 mat-list-item {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
-}
-
-.close-button {
-  align-self: flex-start;
-  padding-right: 8px;
+  padding: 0;
 }
 
 mat-paginator {
