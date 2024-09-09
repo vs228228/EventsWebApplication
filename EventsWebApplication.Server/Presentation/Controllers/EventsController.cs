@@ -1,5 +1,6 @@
 ﻿using EventsWebApplication.Server.Application.DTOs;
 using EventsWebApplication.Server.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventsWebApplication.Server.Presentation.Controllers
@@ -41,6 +42,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok(eventObject);
         }
 
+        [Authorize]
         [HttpGet("usersByEvent")]
         public async Task<IActionResult> GetUsersByEventIdAsync(int eventId)
         {
@@ -48,6 +50,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok(users);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateEventAsync([FromForm] EventCreateDto eventCreateDto,  IFormFile photo = null)
         {
@@ -59,6 +62,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Created();
         }
 
+        [Authorize]
         [HttpPost("registerForEvent")]
         public async Task<IActionResult> RegisterForEventAsync(UserEventIdDto userEventIdDto)
         {
@@ -67,6 +71,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPost("unregisterFromEvent")]
         public async Task<IActionResult> UnregisterForEventAsync(UserEventIdDto userEventIdDto)
         {
@@ -74,6 +79,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPost("isUserRegisterToEvent")]
         public async Task<IActionResult> IsUserRegisterToEvent(UserEventIdDto userEventId)
         {
@@ -81,6 +87,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok(ans);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> UpdateEventAsync([FromForm] EventUpdateDto eventUpdateDto,  IFormFile photo = null)
         {
@@ -103,6 +110,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             }*/
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEventAsync(int id)
         {

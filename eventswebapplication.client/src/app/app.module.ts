@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -33,6 +33,7 @@ import { UserEventsComponent } from './components/user-events/user-events.compon
 import { AdminPanelPageComponent } from './pages/admin-panel-page/admin-panel-page.component';
 import { EditEventComponent } from './components/edit-event/edit-event.component';
 import { CreateEventComponent } from './components/create-event/create-event.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { CreateEventComponent } from './components/create-event/create-event.com
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

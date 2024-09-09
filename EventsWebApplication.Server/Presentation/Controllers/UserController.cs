@@ -17,6 +17,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             _userService = userService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetUsersAsync(int pageNumber, int pageSize)
         {
@@ -24,7 +25,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok(users);
         }
 
-      //  [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAllUsersAsync()
         {
@@ -55,6 +56,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return NotFound("User is not exist");
         }
 
+        [Authorize]
         [HttpGet("getRegisteredEvent/{id}")]
         public async Task<IActionResult> GetRegisteredEventAsync(int id)
         {
@@ -62,6 +64,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok(events);
         }
 
+        [Authorize]
         [HttpGet("notification")]
         public async Task<IActionResult> GetNotificationsAsync(int userId, int pageNumber, int pageSize)
         {
@@ -108,6 +111,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Conflict("Данный email уже зарегистрирован.");
         }
 
+        [Authorize]
         [HttpPost("notification")]
         public async Task<IActionResult> AddNotificationAsync([FromBody] NotificationCreateDto notificationDto)
         {
@@ -132,6 +136,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateUserAsync([FromBody] UserUpdateDto userUpdateDto) // надо исправить там фичи с паролями и нотификацией
         {
@@ -144,6 +149,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public async Task<IActionResult> DeleteUserAsync(int id)
         {
@@ -158,6 +164,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("notification")]
         public async Task<IActionResult> DeleteNotificationAsync(int notificationId)
         {
