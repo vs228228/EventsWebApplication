@@ -1,6 +1,6 @@
-﻿using EventsWebApplication.Server.Application.Pagination;
-using EventsWebApplication.Server.Domain.Entities;
+﻿using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
+using EventsWebApplication.Server.Domain.Pagination;
 using EventsWebApplication.Server.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,22 +13,22 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task AddUserAsync(User user)
+        public async Task AddAsync(User user)
         {
             await _context.Users.AddAsync(user);
         }
 
-        public async Task DeleteUserAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             User user = await _context.Users.FindAsync(id);
             _context.Users.Remove(user);
         }
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateAsync(User user)
         {
             _context.Users.Update(user);
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
             return _context.Users.ToList();
         }
@@ -47,12 +47,12 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
             .FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<User> GetByIdAsync(int id)
         {
             return await _context.Users.FindAsync(id);
         }
 
-        public async Task<PagedResult<User>> GetUsersAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<User>> GetPagedAsync(int pageNumber, int pageSize)
         {
             var totalCount = await _context.Users.CountAsync();
             var users = await _context.Users

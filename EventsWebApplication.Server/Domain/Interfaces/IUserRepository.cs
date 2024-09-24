@@ -1,17 +1,17 @@
-﻿using EventsWebApplication.Server.Application.Pagination;
-using EventsWebApplication.Server.Domain.Entities;
+﻿using EventsWebApplication.Server.Domain.Entities;
+using EventsWebApplication.Server.Domain.Pagination;
 
 namespace EventsWebApplication.Server.Domain.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepository<User>
     {
-        Task<User> GetUserByIdAsync(int id);
+     //   Task<User> GetByIdAsync(int id);
         Task<User> GetUserByEmailAsync(string email);
         Task<IEnumerable<Event>> GetRegisteredEventsAsync(int userId);
-        Task<IEnumerable<User>> GetAllUsersAsync();
-        Task<PagedResult<User>> GetUsersAsync(int pageNumber, int pageSize);
-        Task AddUserAsync(User user);
-        Task UpdateUserAsync(User user);
-        Task DeleteUserAsync(int id);
+     //   Task<IEnumerable<User>> GetAllAsync();
+        Task<PagedResult<User>> GetPagedAsync(int pageNumber, int pageSize);
+     //   Task AddAsync(User user);
+     //   Task UpdateAsync(User user);
+     //   Task DeleteAsync(int id);
     }
 }

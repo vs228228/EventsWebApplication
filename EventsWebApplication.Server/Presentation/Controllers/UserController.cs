@@ -1,5 +1,6 @@
 ﻿using EventsWebApplication.Server.Application.DTOs;
 using EventsWebApplication.Server.Application.Interfaces;
+using EventsWebApplication.Server.Application.Interfaces.IUserUseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -10,18 +11,56 @@ namespace EventsWebApplication.Server.Presentation.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IAddNotificationUseCase _addNotificationUseCase;
+        private readonly IDeleteNotificationUseCase _deleteNotificationUseCase;
+        private readonly IDeleteUserUseCase _deleteUserUseCase;
+        private readonly IGenerateAccessTokenUseCase _generateAccessTokenUseCase;
+        private readonly IGetAllUsersUseCase _getAllUsersUseCase;
+        private readonly IGetNotificationsUseCase _getNotificationsUseCase;
+        private readonly IGetRegisteredEventsUseCase _getRegisteredEventsUseCase;
+        private readonly IGetUserByEmailUseCase _getUserByEmailUseCase;
+        private readonly IGetUserByIdUseCase _getUserByIdUseCase;
+        private readonly IGetUsersUseCase _getUsersUseCase;
+        private readonly ITryAddUserUseCase _tryAddUserUseCase;
+        private readonly ITryAuthenticateUseCase _tryAuthenticateUseCase;
+        private readonly IUpdateUserUseCase _updateUserUseCase;
 
-        public UserController(IUserService userService)
+        public UserController(
+            IAddNotificationUseCase addNotificationUseCase,
+            IDeleteNotificationUseCase deleteNotificationUseCase,
+            IDeleteUserUseCase deleteUserUseCase,
+            IGenerateAccessTokenUseCase generateAccessTokenUseCase,
+            IGetAllUsersUseCase getAllUsersUseCase,
+            IGetNotificationsUseCase getNotificationsUseCase,
+            IGetRegisteredEventsUseCase getRegisteredEventsUseCase,
+            IGetUserByEmailUseCase getUserByEmailUseCase,
+            IGetUserByIdUseCase getUserByIdUseCase,
+            IGetUsersUseCase getUsersUseCase,
+            ITryAddUserUseCase tryAddUserUseCase,
+            ITryAuthenticateUseCase tryAuthenticateUseCase,
+            IUpdateUserUseCase updateUserUseCase
+            )
         {
-            _userService = userService;
+            _addNotificationUseCase = addNotificationUseCase;
+            _deleteNotificationUseCase = deleteNotificationUseCase;
+            _deleteUserUseCase = deleteUserUseCase;
+            _generateAccessTokenUseCase = generateAccessTokenUseCase;
+            _getAllUsersUseCase = getAllUsersUseCase;
+            _getNotificationsUseCase = getNotificationsUseCase;
+            _getRegisteredEventsUseCase = getRegisteredEventsUseCase;
+            _getUserByEmailUseCase = getUserByEmailUseCase;
+            _getUserByIdUseCase = getUserByIdUseCase;
+            _getUsersUseCase = getUsersUseCase;
+            _tryAddUserUseCase = tryAddUserUseCase;
+            _tryAuthenticateUseCase = tryAuthenticateUseCase;
+            _updateUserUseCase = updateUserUseCase;
         }
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetUsersAsync(int pageNumber, int pageSize)
         {
-            var users = await _userService.GetUsersAsync(pageNumber, pageSize);
+            var users = await _getUsersUseCase.ExecuteAsync(pageNumber, pageSize);
             return Ok(users);
         }
 
@@ -29,38 +68,30 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAllUsersAsync()
         {
-            var users = await _userService.GetAllUsersAsync();
-            return  Ok(users);
+            var users = await _getAllUsersUseCase.ExecuteAsync();
+            return Ok(users);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserByIdAsync(int id)
         {
-            
-            var user = await _userService.GetUserByIdAsync(id);
-            if (user != null)
-            {
-                return Ok(user);
-            }
-            return NotFound("User is not exist");
+
+            var user = await _getUserByIdUseCase.ExecuteAsync(id);
+            return Ok(user);
         }
 
         [HttpGet("getByEmail/{email}")]
         public async Task<IActionResult> GetUserByEmail(string email)
         {
-            var user = await _userService.GetUserByEmailAsync(email);
-            if (user != null)
-            {
-                return Ok(user);
-            }
-            return NotFound("User is not exist");
+            var user = await _getUserByEmailUseCase.ExecuteAsync(email);
+            return Ok(user);
         }
 
         [Authorize]
         [HttpGet("getRegisteredEvent/{id}")]
-        public async Task<IActionResult> GetRegisteredEventAsync(int id)
+        public async Task<IActionResult> GetRegisteredEventsAsync(int id)
         {
-            var events = await _userService.GetRegisteredEventsAsync(id);
+            var events = await _getRegisteredEventsUseCase.ExecuteAsync(id);
             return Ok(events);
         }
 
@@ -68,84 +99,54 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         [HttpGet("notification")]
         public async Task<IActionResult> GetNotificationsAsync(int userId, int pageNumber, int pageSize)
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var notifications = await _userService.GetNotificationsAsync(userId, pageNumber, pageSize);
+            var notifications = await _getNotificationsUseCase.ExecuteAsync(userId, pageNumber, pageSize);
             return Ok(notifications);
         }
 
         [HttpPost("authByPassword")]
         public async Task<IActionResult> TryAuthenticateByPasswordAsync([FromBody] UserAuthDto userAuthDto) // без хешера и токена не работает
         {
-            var ans = await _userService.TryAuthenticateAsync(userAuthDto);
-            if(ans == "Wrong email")
-            {
-                return BadRequest("Wrong email");
-            }
-            else if (ans == "Wrong password")
-            {
-                return BadRequest("Wrong password");
-            }
-            var user = await _userService.GetUserByEmailAsync(userAuthDto.UserEmail);
+            var ans = await _tryAuthenticateUseCase.ExecuteAsync(userAuthDto);
+            var user = await _getUserByEmailUseCase.ExecuteAsync(userAuthDto.UserEmail);
             GetTokenDto getTokenDto = new GetTokenDto()
             {
                 RefreshToken = ans,
                 userId = user.Id
             };
-            var newAns = await _userService.GenerateAccessToken(getTokenDto);
+            var newAns = await _generateAccessTokenUseCase.ExecuteAsync(getTokenDto);
             return Ok(newAns);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddUserAsync([FromBody] UserCreateDto userCreateDto) // без хешера и токена не работает
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            string ans = await _userService.TryAddUserAsync(userCreateDto);
-            if (ans == "OK") return Ok(); 
-            
-            return Conflict("Данный email уже зарегистрирован.");
+            await _tryAddUserUseCase.ExecuteAsync(userCreateDto);
+            return Ok();
+
         }
 
         [Authorize]
         [HttpPost("notification")]
         public async Task<IActionResult> AddNotificationAsync([FromBody] NotificationCreateDto notificationDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await _userService.AddNotificationAsync(notificationDto);
+            await _addNotificationUseCase.ExecuteAsync(notificationDto);
             return Ok();
         }
 
         [HttpPost("refreshToken")]
         public async Task<IActionResult> RefreshTokenAsync([FromBody] GetTokenDto getTokenDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var tokens = await _userService.GenerateAccessToken(getTokenDto);
-            if (tokens == null) return Unauthorized();
+            var tokens = await _generateAccessTokenUseCase.ExecuteAsync(getTokenDto);
             return Ok(tokens);
-            
+
         }
 
         [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateUserAsync([FromBody] UserUpdateDto userUpdateDto) // надо исправить там фичи с паролями и нотификацией
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
-            await _userService.UpdateUserAsync(userUpdateDto);
+            await _updateUserUseCase.ExecuteAsync(userUpdateDto);
             return Ok();
         }
 
@@ -153,30 +154,17 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteUserAsync(int id)
         {
-            try
-            {
-                await _userService.DeleteUserAsync(id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+
+            await _deleteUserUseCase.ExecuteAsync(id);
+            return NoContent();
         }
 
         [Authorize]
         [HttpDelete("notification")]
         public async Task<IActionResult> DeleteNotificationAsync(int notificationId)
         {
-            try
-            {
-                await _userService.DeleteNotificationAsync(notificationId);
-                return NoContent();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            await _deleteNotificationUseCase.ExecuteAsync(notificationId);
+            return NoContent();
         }
     }
 }
