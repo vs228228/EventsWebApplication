@@ -1,6 +1,6 @@
-﻿using EventsWebApplication.Server.Application.Pagination;
-using EventsWebApplication.Server.Domain.Entities;
+﻿using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
+using EventsWebApplication.Server.Domain.Pagination;
 using EventsWebApplication.Server.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,28 +13,28 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task AddEventAsync(Event eventObject)
+        public async Task AddAsync(Event eventObject)
         {
             await _context.Events.AddAsync(eventObject);
         }
 
-        public async Task DeleteEventAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             Event entity = await _context.Events.FindAsync(id);
             _context.Events.Remove(entity);
         }
 
-        public async Task UpdateEventAsync(Event eventOjbect)
+        public async Task UpdateAsync(Event eventOjbect)
         {
             _context.Events.Update(eventOjbect);
         }
 
-        public async Task<IEnumerable<Event>> GetAllEventsAsync()
+        public async Task<IEnumerable<Event>> GetAllAsync()
         {
             return await _context.Events.ToListAsync();
         }
 
-        public async Task<Event> GetEventByIdAsync(int id)
+        public async Task<Event> GetByIdAsync(int id)
         {
             return await _context.Events.FindAsync(id);
         }
@@ -47,7 +47,8 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
             .ToListAsync();
         }
 
-        public async Task<PagedResult<Event>> GetEventsAsync(int pageNumber, int pageSize, string searchString)
+
+        public async Task<PagedResult<Event>> GetPagedAsync(int pageNumber, int pageSize, string searchString)
         {
             var currentDateTime = DateTime.UtcNow;
 
@@ -106,5 +107,6 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
             .FirstOrDefaultAsync();
             return ans;
         }
+
     }
 }

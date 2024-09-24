@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using EventsWebApplication.Server.Application.DTOs;
 using EventsWebApplication.Server.Application.Interfaces;
-using EventsWebApplication.Server.Application.Pagination;
 using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
+using EventsWebApplication.Server.Domain.Pagination;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace EventsWebApplication.Server.Application.Services
@@ -24,7 +24,7 @@ namespace EventsWebApplication.Server.Application.Services
         }
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
-            var users = await _unitOfWork.Users.GetAllUsersAsync();
+            var users = await _unitOfWork.Users.GetAllAsync();
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
@@ -42,13 +42,13 @@ namespace EventsWebApplication.Server.Application.Services
 
         public async Task<UserDto> GetUserByIdAsync(int id)
         {
-            var user = await _unitOfWork.Users.GetUserByIdAsync(id);
+            var user = await _unitOfWork.Users.GetByIdAsync(id);
             return _mapper.Map<UserDto>(user);
         }
 
         public async Task<PagedResult<UserDto>> GetUsersAsync(int pageNumber, int pageSize)
         {
-            var users = await _unitOfWork.Users.GetUsersAsync(pageNumber, pageSize);
+            var users = await _unitOfWork.Users.GetPagedAsync(pageNumber, pageSize);
             return _mapper.Map<PagedResult<UserDto>>(users);
         }
 
@@ -68,7 +68,6 @@ namespace EventsWebApplication.Server.Application.Services
            await  _unitOfWork.SaveChangesAsync();
            return token.Token;
             
-        //    throw new NotImplementedException();
         }
 
         public async Task<string> TryAddUserAsync(UserCreateDto userCreateDto)
@@ -80,7 +79,7 @@ namespace EventsWebApplication.Server.Application.Services
                 var token = _tokenManager.GenerateRefreshToken();
                 user.RefreshToken = token.Token;
                 user.Expiration = token.Expiration;
-                await _unitOfWork.Users.AddUserAsync(user);
+                await _unitOfWork.Users.AddAsync(user);
                 await _unitOfWork.SaveChangesAsync();
                 return "OK";
             }
@@ -91,9 +90,9 @@ namespace EventsWebApplication.Server.Application.Services
         {
             /*var user = _mapper.Map<User>(userUpdateDto);
             user.Password = oldUser.Password;*/
-            var entity = await _unitOfWork.Users.GetUserByIdAsync(userUpdateDto.Id);
+            var entity = await _unitOfWork.Users.GetByIdAsync(userUpdateDto.Id);
             var user = _mapper.Map(userUpdateDto, entity);
-            await _unitOfWork.Users.UpdateUserAsync(user);
+            await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.SaveChangesAsync();
         }
 
@@ -104,32 +103,32 @@ namespace EventsWebApplication.Server.Application.Services
             {
                 await _unitOfWork.Events.UnregisterUserFromEventAsync(id, item.Id);
             }
-            await _unitOfWork.Users.DeleteUserAsync(id);
+            await _unitOfWork.Users.DeleteAsync(id);
             await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<PagedResult<NotificationDto>> GetNotificationsAsync(int userId, int pageNumber, int pageSize)
         {
-            var notifications = await _unitOfWork.Notifications.GetNotificationsAsync(userId, pageNumber, pageSize);
+            var notifications = await _unitOfWork.Notifications.GePagedAsync(userId, pageNumber, pageSize);
             return _mapper.Map<PagedResult<NotificationDto>>(notifications);
         }
 
         public async Task AddNotificationAsync(NotificationCreateDto notificationDto)
         {
             var notification = _mapper.Map<Notification>(notificationDto);
-            await _unitOfWork.Notifications.AddNotificationAsync(notification);
+            await _unitOfWork.Notifications.AddAsync(notification);
             await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task DeleteNotificationAsync(int notificationId)
         {
-            await _unitOfWork.Notifications.DeleteNotificationAsync(notificationId);
+            await _unitOfWork.Notifications.DeleteAsync(notificationId);
             await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<TokenDto> GenerateAccessToken(GetTokenDto getTokenDto)
         {
-            var user = await _unitOfWork.Users.GetUserByIdAsync(getTokenDto.userId);
+            var user = await _unitOfWork.Users.GetByIdAsync(getTokenDto.userId);
             if (user == null || user.RefreshToken != getTokenDto.RefreshToken || user.Expiration < DateTime.Now)
             {
                 return null;

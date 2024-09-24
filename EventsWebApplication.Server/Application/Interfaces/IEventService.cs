@@ -1,6 +1,6 @@
 ﻿using EventsWebApplication.Server.Application.DTOs;
-using EventsWebApplication.Server.Application.Pagination;
 using EventsWebApplication.Server.Domain.Entities;
+using EventsWebApplication.Server.Domain.Pagination;
 
 namespace EventsWebApplication.Server.Application.Interfaces
 {

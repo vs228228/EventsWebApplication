@@ -1,5 +1,9 @@
 using EventsWebApplication.Server.Application.Interfaces;
+using EventsWebApplication.Server.Application.Interfaces.IEventUseCases;
+using EventsWebApplication.Server.Application.Interfaces.IUserUseCases;
 using EventsWebApplication.Server.Application.Services;
+using EventsWebApplication.Server.Application.UseCases.EventUseCases;
+using EventsWebApplication.Server.Application.UseCases.UserUseCases;
 using EventsWebApplication.Server.Application.Validators;
 using EventsWebApplication.Server.Domain.Interfaces;
 using EventsWebApplication.Server.Infrastructure.Data;
@@ -67,8 +71,35 @@ namespace EventsWebApplication.Server
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             // Инъекция зависимостей
-            builder.Services.AddScoped<IEventService, EventService>();
+            /*builder.Services.AddScoped<IEventService, EventService>();*/
             builder.Services.AddScoped<IUserService, UserService>();
+
+            // use-case
+            builder.Services.AddScoped<IAddEventUseCase, AddEventUseCase>();
+            builder.Services.AddScoped<ICheckUserRegisterForEventUseCase, CheckUserRegistetForEventUseCase>();
+            builder.Services.AddScoped<IDeleteEventUseCase, DeleteEventUseCase>();
+            builder.Services.AddScoped<IGetAllEventsUseCase, GetAllEventsUseCase>();
+            builder.Services.AddScoped<IGetEventByIdUseCase, GetEventByIdUseCase>();
+            builder.Services.AddScoped<IGetEventsUseCase, GetEventsUseCase>();
+            builder.Services.AddScoped<IGetUsersByEventIdUseCase, GetUsersByEventIdUseCase>();
+            builder.Services.AddScoped<IRegisterUserForEventUseCase, RegisterUserForEventUseCase>();
+            builder.Services.AddScoped<IUnregisterUserFromEventUseCase, UnregisterUserFromEventUseCase>();
+            builder.Services.AddScoped<IUpdateEventUseCase, UpdateEventUseCase>();
+
+            builder.Services.AddScoped<IAddNotificationUseCase, AddNotificationUseCase>();
+            builder.Services.AddScoped<IDeleteNotificationUseCase, DeleteNotificationUseCase>();
+            builder.Services.AddScoped<IDeleteUserUseCase, DeleteUserUseCase>();
+            builder.Services.AddScoped<IGenerateAccessTokenUseCase, GenerateAccessTokenUseCase>();
+            builder.Services.AddScoped<IGetAllUsersUseCase,  GetAllUsersUseCase>();
+            builder.Services.AddScoped<IGetNotificationsUseCase, GetNotificationsUseCase>();
+            builder.Services.AddScoped<IGetRegisteredEventsUseCase, GetRegisteredEventsUseCase>();
+            builder.Services.AddScoped<IGetUserByEmailUseCase, GetUserByEmailUseCase>();
+            builder.Services.AddScoped<IGetUserByIdUseCase, GetUserByIdUseCase>();
+            builder.Services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
+            builder.Services.AddScoped<ITryAddUserUseCase, TryAddUserUseCase>();
+            builder.Services.AddScoped<ITryAuthenticateUseCase, TryAuthenticateUseCase>();
+            builder.Services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
+
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEventRepository, EventRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -143,6 +174,8 @@ namespace EventsWebApplication.Server
                            .AllowAnyMethod();
                 });
             }
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
 

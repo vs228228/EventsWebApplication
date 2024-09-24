@@ -1,4 +1,4 @@
-﻿namespace EventsWebApplication.Server.Application.Pagination
+﻿namespace EventsWebApplication.Server.Domain.Pagination
 {
     public class PagedResult<T>
     {
