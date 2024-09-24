@@ -71,8 +71,6 @@ namespace EventsWebApplication.Server
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             // Инъекция зависимостей
-            /*builder.Services.AddScoped<IEventService, EventService>();*/
-            builder.Services.AddScoped<IUserService, UserService>();
 
             // use-case
             builder.Services.AddScoped<IAddEventUseCase, AddEventUseCase>();
