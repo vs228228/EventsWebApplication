@@ -1,5 +1,5 @@
 ﻿using EventsWebApplication.Server.Application.DTOs;
-using EventsWebApplication.Server.Domain.Pagination;
+using EventsWebApplication.Server.Application.Pagination;
 
 namespace EventsWebApplication.Server.Application.Interfaces.IUserUseCases
 {

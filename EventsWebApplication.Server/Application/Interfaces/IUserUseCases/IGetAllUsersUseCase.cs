@@ -1,9 +1,9 @@
-﻿using EventsWebApplication.Server.Application.DTOs;
+﻿using EventsWebApplication.Server.Application.DTOs.UserDTOs;
 
 namespace EventsWebApplication.Server.Application.Interfaces.IUserUseCases
 {
     public interface IGetAllUsersUseCase
     {
-        public Task<IEnumerable<UserDto>> ExecuteAsync();
+        public Task<IEnumerable<UserResponseDto>> ExecuteAsync();
     }
 }

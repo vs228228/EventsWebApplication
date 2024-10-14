@@ -1,4 +1,5 @@
-﻿using EventsWebApplication.Server.Application.DTOs;
+﻿using EventsWebApplication.Server.Application.DTOs.EventDTOs;
+using EventsWebApplication.Server.Application.DTOs.UserDTOs;
 using EventsWebApplication.Server.Application.Interfaces;
 using EventsWebApplication.Server.Application.Interfaces.IEventUseCases;
 using Microsoft.AspNetCore.Authorization;
@@ -78,7 +79,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateEventAsync([FromForm] EventCreateDto eventCreateDto,  IFormFile photo = null)
+        public async Task<IActionResult> CreateEventAsync([FromForm] EventCreateRequestDto eventCreateDto,  IFormFile photo = null)
         {
             await _addEventUseCase.ExecuteAsync(eventCreateDto, photo);
             return Created();
@@ -110,7 +111,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut]
-        public async Task<IActionResult> UpdateEventAsync([FromForm] EventUpdateDto eventUpdateDto,  IFormFile photo = null)
+        public async Task<IActionResult> UpdateEventAsync([FromForm] EventUpdateRequestDto eventUpdateDto,  IFormFile photo = null)
         {
                 await _updateEventUseCase.ExecuteAsync(eventUpdateDto, photo);
                 return Ok();

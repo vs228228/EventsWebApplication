@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using EventsWebApplication.Server.Application.DTOs;
+using EventsWebApplication.Server.Application.DTOs.UserDTOs;
 using EventsWebApplication.Server.Application.Interfaces.IUserUseCases;
+using EventsWebApplication.Server.Application.Pagination;
+using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
-using EventsWebApplication.Server.Domain.Pagination;
 
 namespace EventsWebApplication.Server.Application.UseCases.UserUseCases
 {
@@ -17,10 +18,17 @@ namespace EventsWebApplication.Server.Application.UseCases.UserUseCases
             _mapper = mapper;
         }
 
-        public async Task<PagedResult<UserDto>> ExecuteAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<UserResponseDto>> ExecuteAsync(int pageNumber, int pageSize)
         {
             var users = await _unitOfWork.Users.GetPagedAsync(pageNumber, pageSize);
-            return _mapper.Map<PagedResult<UserDto>>(users);
+            PagedResult<UserResponseDto> result = new PagedResult<UserResponseDto>
+            {
+                Items = _mapper.Map<IEnumerable<UserResponseDto>>(users.Key),
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                TotalCount = users.Value
+            };
+            return result;
         }
     }
 }

@@ -1,19 +1,22 @@
 ﻿using EventsWebApplication.Server.Application.DTOs;
+using EventsWebApplication.Server.Application.DTOs.EventDTOs;
+using EventsWebApplication.Server.Application.DTOs.EventDTOs.Responses;
+using EventsWebApplication.Server.Application.DTOs.UserDTOs;
+using EventsWebApplication.Server.Application.Pagination;
 using EventsWebApplication.Server.Domain.Entities;
-using EventsWebApplication.Server.Domain.Pagination;
 
 namespace EventsWebApplication.Server.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<UserDto> GetUserByIdAsync(int id);
-        Task<UserDto> GetUserByEmailAsync(string email);
-        Task<IEnumerable<EventDto>> GetRegisteredEventsAsync(int userId);
-        Task<IEnumerable<UserDto>> GetAllUsersAsync();
-        Task<PagedResult<UserDto>> GetUsersAsync(int pageNumber, int pageSize);
+        Task<UserResponseDto> GetUserByIdAsync(int id);
+        Task<UserResponseDto> GetUserByEmailAsync(string email);
+        Task<IEnumerable<EventResponseDto>> GetRegisteredEventsAsync(int userId);
+        Task<IEnumerable<UserResponseDto>> GetAllUsersAsync();
+        Task<PagedResult<UserResponseDto>> GetUsersAsync(int pageNumber, int pageSize);
         Task<string> TryAuthenticateAsync(UserAuthDto loginDto);
-        Task<string> TryAddUserAsync(UserCreateDto user);
-        Task UpdateUserAsync(UserUpdateDto user);
+        Task<string> TryAddUserAsync(UserCreateResponseDto user);
+        Task UpdateUserAsync(UserUpdateRequestDto user);
         Task DeleteUserAsync(int id);
 
         Task<PagedResult<NotificationDto>> GetNotificationsAsync(int userId, int pageNumber, int pageSize);

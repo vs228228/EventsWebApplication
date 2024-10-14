@@ -1,10 +1,7 @@
-﻿using EventsWebApplication.Server.Domain.Entities;
-
-namespace EventsWebApplication.Server.Application.DTOs
+﻿namespace EventsWebApplication.Server.Application.DTOs.EventDTOs
 {
-    public class EventUpdateDto
+    public class EventDtoBase
     {
-        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime DateAndTime { get; set; }

@@ -1,6 +1,6 @@
-﻿using EventsWebApplication.Server.Domain.Entities;
+﻿using EventsWebApplication.Server.Application.Pagination;
+using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
-using EventsWebApplication.Server.Domain.Pagination;
 using EventsWebApplication.Server.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,7 +52,7 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
             return await _context.Users.FindAsync(id);
         }
 
-        public async Task<PagedResult<User>> GetPagedAsync(int pageNumber, int pageSize)
+        public async Task<KeyValuePair<IEnumerable<User>, int>> GetPagedAsync(int pageNumber, int pageSize)
         {
             var totalCount = await _context.Users.CountAsync();
             var users = await _context.Users
@@ -60,13 +60,8 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
                 .Take(pageSize)
                 .ToListAsync();
 
-            return new PagedResult<User>
-            {
-                Items = users,
-                TotalCount = totalCount,
-                CurrentPage = pageNumber,
-                PageSize = pageSize
-            };
+            return new KeyValuePair<IEnumerable<User>, int>(users, totalCount);  
+            
         }
 
     }

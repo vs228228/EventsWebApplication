@@ -1,9 +1,9 @@
-﻿using EventsWebApplication.Server.Application.DTOs;
+﻿using EventsWebApplication.Server.Application.DTOs.EventDTOs;
 using FluentValidation;
 
 namespace EventsWebApplication.Server.Application.Validators
 {
-    public class EventUpdateDtoValidator : AbstractValidator<EventUpdateDto>
+    public class EventUpdateDtoValidator : AbstractValidator<EventUpdateRequestDto>
     {
         public EventUpdateDtoValidator()
         {

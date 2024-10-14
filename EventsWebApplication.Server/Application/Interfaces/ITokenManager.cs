@@ -1,6 +1,6 @@
 ﻿using EventsWebApplication.Server.Domain.Entities;
 
-namespace EventsWebApplication.Server.Domain.Interfaces
+namespace EventsWebApplication.Server.Application.Interfaces
 {
     public interface ITokenManager
     {

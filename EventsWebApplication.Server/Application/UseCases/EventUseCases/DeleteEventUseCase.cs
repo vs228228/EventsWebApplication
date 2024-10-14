@@ -15,9 +15,9 @@ namespace EventsWebApplication.Server.Application.UseCases.EventUseCases
 
         public async Task ExecuteAsync(int id)
         {
-            try
-            {
+            
                 Event eventObject = await _unitOfWork.Events.GetByIdAsync(id);
+                if(eventObject == null) throw new KeyNotFoundException();
                 string message = $"Мероприятие {eventObject.Title} было удалено.";
                 await NotifyUsersOfChange(eventObject.Id, message);
                 var users = await _unitOfWork.Events.GetUsersByEventIdAsync(id);
@@ -27,11 +27,7 @@ namespace EventsWebApplication.Server.Application.UseCases.EventUseCases
                 }
                 await _unitOfWork.Events.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
-            }
-            catch
-            {
-                throw new KeyNotFoundException();
-            }
+            
         }
 
         private async Task NotifyUsersOfChange(int eventId, string message)

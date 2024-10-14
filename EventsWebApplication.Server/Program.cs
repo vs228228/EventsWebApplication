@@ -68,7 +68,10 @@ namespace EventsWebApplication.Server
             });
 
             // маппер
-            builder.Services.AddAutoMapper(typeof(MappingProfile));
+            builder.Services.AddAutoMapper(typeof(EventMappingProfile));
+            builder.Services.AddAutoMapper(typeof(UserMappingProfile));
+            builder.Services.AddAutoMapper(typeof(NotificationMappingProfile));
+            builder.Services.AddAutoMapper(typeof(DateOnlyMappingProfile));
 
             // Инъекция зависимостей
 
@@ -115,6 +118,7 @@ namespace EventsWebApplication.Server
                 config.RegisterValidatorsFromAssemblyContaining<UserUpdateDtoValidator>();
                 config.RegisterValidatorsFromAssemblyContaining<EventUpdateDtoValidator>();
                 config.RegisterValidatorsFromAssemblyContaining<EventCreateDtoValidator>();
+                config.RegisterValidatorsFromAssemblyContaining<AddNotificationValidator>();
             });
 
             // jwt

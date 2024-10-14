@@ -1,10 +1,10 @@
-﻿using EventsWebApplication.Server.Application.DTOs;
-using EventsWebApplication.Server.Domain.Pagination;
+﻿using EventsWebApplication.Server.Application.DTOs.UserDTOs;
+using EventsWebApplication.Server.Application.Pagination;
 
 namespace EventsWebApplication.Server.Application.Interfaces.IUserUseCases
 {
     public interface IGetUsersUseCase
     {
-        public Task<PagedResult<UserDto>> ExecuteAsync(int pageNumber, int pageSize);
+        public Task<PagedResult<UserResponseDto>> ExecuteAsync(int pageNumber, int pageSize);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using EventsWebApplication.Server.Application.DTOs;
+using EventsWebApplication.Server.Application.Interfaces;
 using EventsWebApplication.Server.Application.Interfaces.IUserUseCases;
 using EventsWebApplication.Server.Domain.Interfaces;
 using FluentValidation;

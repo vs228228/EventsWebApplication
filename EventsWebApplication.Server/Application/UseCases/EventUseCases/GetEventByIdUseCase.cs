@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using EventsWebApplication.Server.Application.DTOs;
+using EventsWebApplication.Server.Application.DTOs.EventDTOs;
+using EventsWebApplication.Server.Application.DTOs.EventDTOs.Responses;
 using EventsWebApplication.Server.Application.Interfaces.IEventUseCases;
 using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
@@ -17,11 +18,11 @@ namespace EventsWebApplication.Server.Application.UseCases.EventUseCases
             _mapper = mapper;
         }
 
-        public async Task<EventDto> ExecuteAsync(int id)
+        public async Task<EventResponseDto> ExecuteAsync(int id)
         {
             Event eventObject = await _unitOfWork.Events.GetByIdAsync(id);
             if(eventObject == null) throw new KeyNotFoundException(); 
-            return _mapper.Map<EventDto>(eventObject);
+            return _mapper.Map<EventResponseDto>(eventObject);
         }
     }
 }

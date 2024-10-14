@@ -1,4 +1,5 @@
 ﻿using EventsWebApplication.Server.Application.DTOs;
+using EventsWebApplication.Server.Application.DTOs.UserDTOs;
 using EventsWebApplication.Server.Application.Interfaces;
 using EventsWebApplication.Server.Application.Interfaces.IUserUseCases;
 using Microsoft.AspNetCore.Authorization;
@@ -118,7 +119,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUserAsync([FromBody] UserCreateDto userCreateDto) // без хешера и токена не работает
+        public async Task<IActionResult> AddUserAsync([FromBody] UserCreateResponseDto userCreateDto) // без хешера и токена не работает
         {
             await _tryAddUserUseCase.ExecuteAsync(userCreateDto);
             return Ok();
@@ -143,7 +144,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
 
         [Authorize]
         [HttpPut]
-        public async Task<IActionResult> UpdateUserAsync([FromBody] UserUpdateDto userUpdateDto) // надо исправить там фичи с паролями и нотификацией
+        public async Task<IActionResult> UpdateUserAsync([FromBody] UserUpdateRequestDto userUpdateDto) // надо исправить там фичи с паролями и нотификацией
         {
 
             await _updateUserUseCase.ExecuteAsync(userUpdateDto);

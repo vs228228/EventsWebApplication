@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using EventsWebApplication.Server.Application.DTOs;
+using EventsWebApplication.Server.Application.DTOs.EventDTOs;
+using EventsWebApplication.Server.Application.DTOs.EventDTOs.Responses;
 using EventsWebApplication.Server.Application.Interfaces.IEventUseCases;
 using EventsWebApplication.Server.Domain.Interfaces;
 
@@ -14,10 +15,10 @@ namespace EventsWebApplication.Server.Application.UseCases.EventUseCases
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<EventDto>> ExecuteAsync()
+        public async Task<IEnumerable<EventResponseDto>> ExecuteAsync()
         {
             var events = await _unitOfWork.Events.GetAllAsync();
-            return _mapper.Map<IEnumerable<EventDto>>(events);
+            return _mapper.Map<IEnumerable<EventResponseDto>>(events);
         }
     }
 }

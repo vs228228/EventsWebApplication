@@ -1,5 +1,6 @@
 ﻿using EventsWebApplication.Server.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using EventsWebApplication.Server.Infrastructure.Data.Configurations;
 
 namespace EventsWebApplication.Server.Infrastructure.Data
 {
@@ -15,54 +16,10 @@ namespace EventsWebApplication.Server.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            // Настройка автоинкремента для полей Id
-            modelBuilder.Entity<Event>()
-                .Property(e => e.Id)
-                .ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<User>()
-                .Property(u => u.Id)
-                .ValueGeneratedOnAdd();
-
-            // автоинкремент не нужен в промежуточной таблице
-            modelBuilder.Entity<EventParticipant>()
-                .Property(ep => ep.UserId)
-                .ValueGeneratedNever();
-
-            modelBuilder.Entity<EventParticipant>()
-                .Property(ep => ep.EventId)
-                .ValueGeneratedNever();
-
-            // Many-To-Many
-            modelBuilder.Entity<EventParticipant>()
-                .HasKey(uer => new { uer.UserId, uer.EventId });
-
-            modelBuilder.Entity<EventParticipant>()
-                .HasOne(uer => uer.User)
-                .WithMany(u => u.Events)
-                .HasForeignKey(uer => uer.UserId);
-
-            modelBuilder.Entity<EventParticipant>()
-                .HasOne(uer => uer.Event)
-                .WithMany(e => e.Participants)
-                .HasForeignKey(uer => uer.EventId);
-
-            // One-To-Many
-            modelBuilder.Entity<User>()
-            .HasMany(u => u.Notifications)
-            .WithOne(n => n.User)
-            .HasForeignKey(n => n.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Notification>()
-            .HasKey(n => n.Id);
-
-            modelBuilder.Entity<Notification>()
-                .Property(n => n.Id)
-                .ValueGeneratedOnAdd();
-
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new EventConfiguration());
+            modelBuilder.ApplyConfiguration(new EventParticipantConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationConfiguration());
         }
-
     }
 }

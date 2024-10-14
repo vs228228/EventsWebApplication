@@ -1,5 +1,5 @@
-﻿using EventsWebApplication.Server.Domain.Entities;
-using EventsWebApplication.Server.Domain.Interfaces;
+﻿using EventsWebApplication.Server.Application.Interfaces;
+using EventsWebApplication.Server.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

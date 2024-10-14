@@ -1,4 +1,4 @@
-﻿using EventsWebApplication.Server.Application.DTOs;
+﻿using EventsWebApplication.Server.Application.DTOs.UserDTOs;
 using EventsWebApplication.Server.Application.Interfaces.IEventUseCases;
 using EventsWebApplication.Server.Domain.Interfaces;
 using System.Data.SqlTypes;

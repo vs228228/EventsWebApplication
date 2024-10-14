@@ -1,6 +1,6 @@
-﻿using EventsWebApplication.Server.Domain.Entities;
+﻿using EventsWebApplication.Server.Application.Pagination;
+using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
-using EventsWebApplication.Server.Domain.Pagination;
 using EventsWebApplication.Server.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,9 +48,11 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
         }
 
 
-        public async Task<PagedResult<Event>> GetPagedAsync(int pageNumber, int pageSize, string searchString)
+        public async Task<KeyValuePair<IEnumerable<Event>, int>> GetPagedAsync(int pageNumber, int pageSize, string searchString)
         {
             var currentDateTime = DateTime.UtcNow;
+
+
 
             var filteredEventsQuery = _context.Events
                 .Where(e => e.DateAndTime > currentDateTime);
@@ -68,13 +70,7 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
                 .Take(pageSize)
                 .ToListAsync();
 
-            return new PagedResult<Event>
-            {
-                TotalCount = totalCount,
-                Items = events,
-                PageSize = pageSize,
-                CurrentPage = pageNumber
-            };
+            return new KeyValuePair<IEnumerable<Event>, int>(events, totalCount);
         }
 
 

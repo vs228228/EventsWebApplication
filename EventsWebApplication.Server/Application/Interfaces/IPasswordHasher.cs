@@ -1,4 +1,4 @@
-﻿namespace EventsWebApplication.Server.Domain.Interfaces
+﻿namespace EventsWebApplication.Server.Application.Interfaces
 {
     public interface IPasswordHasher
     {

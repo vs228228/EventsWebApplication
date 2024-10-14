@@ -1,6 +1,6 @@
-﻿using EventsWebApplication.Server.Domain.Entities;
+﻿using EventsWebApplication.Server.Application.Pagination;
+using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
-using EventsWebApplication.Server.Domain.Pagination;
 using EventsWebApplication.Server.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,7 +34,7 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
             return await _context.Notifications.FindAsync(id);
         }
 
-        public async Task<PagedResult<Notification>> GePagedAsync(int userId, int pageNumber, int pageSize)
+        public async Task<KeyValuePair<IEnumerable<Notification>, int>> GePagedAsync(int userId, int pageNumber, int pageSize)
         {
             var query = _context.Notifications
                 .Where(n => n.UserId == userId)
@@ -47,13 +47,7 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
                 .Take(pageSize)
                 .ToListAsync();
 
-            return new PagedResult<Notification>
-            {
-                Items = notifications,
-                CurrentPage = pageNumber,
-                PageSize = pageSize,
-                TotalCount = totalCount
-            };
+            return new KeyValuePair<IEnumerable<Notification>, int>(notifications, totalCount);
         }
 
         public Task UpdateAsync(Notification notification)

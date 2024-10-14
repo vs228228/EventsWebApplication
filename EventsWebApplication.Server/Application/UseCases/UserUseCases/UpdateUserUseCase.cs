@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EventsWebApplication.Server.Application.DTOs;
+using EventsWebApplication.Server.Application.DTOs.UserDTOs;
 using EventsWebApplication.Server.Application.Interfaces.IUserUseCases;
 using EventsWebApplication.Server.Application.Validators;
 using EventsWebApplication.Server.Domain.Interfaces;
@@ -20,13 +20,9 @@ namespace EventsWebApplication.Server.Application.UseCases.UserUseCases
             _validator = validator;
         }
 
-        public async Task ExecuteAsync(UserUpdateDto userUpdateDto)
+        public async Task ExecuteAsync(UserUpdateRequestDto userUpdateDto)
         {
-            var validationResult = _validator.Validate(userUpdateDto);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            
             var entity = await _unitOfWork.Users.GetByIdAsync(userUpdateDto.Id);
             var user = _mapper.Map(userUpdateDto, entity);
             await _unitOfWork.Users.UpdateAsync(user);

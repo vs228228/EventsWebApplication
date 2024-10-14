@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using EventsWebApplication.Server.Application.DTOs;
 using EventsWebApplication.Server.Application.Interfaces.IUserUseCases;
+using EventsWebApplication.Server.Application.Pagination;
 using EventsWebApplication.Server.Domain.Interfaces;
-using EventsWebApplication.Server.Domain.Pagination;
 
 namespace EventsWebApplication.Server.Application.UseCases.UserUseCases
 {
@@ -20,7 +20,15 @@ namespace EventsWebApplication.Server.Application.UseCases.UserUseCases
         public async Task<PagedResult<NotificationDto>> ExecuteAsync(int userId, int pageNumber, int pageSize)
         {
             var notifications = await _unitOfWork.Notifications.GePagedAsync(userId, pageNumber, pageSize);
-            return _mapper.Map<PagedResult<NotificationDto>>(notifications);
+            PagedResult<NotificationDto> result = new PagedResult<NotificationDto>
+            {
+                Items = _mapper.Map<IEnumerable<NotificationDto>>(notifications.Key),
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                TotalCount = notifications.Value
+            };
+
+            return result;
         }
     }
 }

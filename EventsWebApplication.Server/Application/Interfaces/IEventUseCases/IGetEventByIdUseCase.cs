@@ -1,9 +1,10 @@
-﻿using EventsWebApplication.Server.Application.DTOs;
+﻿using EventsWebApplication.Server.Application.DTOs.EventDTOs;
+using EventsWebApplication.Server.Application.DTOs.EventDTOs.Responses;
 
 namespace EventsWebApplication.Server.Application.Interfaces.IEventUseCases
 {
     public interface IGetEventByIdUseCase
     {
-        public Task<EventDto> ExecuteAsync(int id);
+        public Task<EventResponseDto> ExecuteAsync(int id);
     }
 }

@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -29,63 +28,27 @@ public class ExceptionHandlingMiddleware
     {
         context.Response.ContentType = "application/json";
 
-        if (ex is ValidationException validationException)
+        context.Response.StatusCode = ex switch
         {
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-
-            var validationResponse = new
-            {
-                StatusCode = context.Response.StatusCode,
-                Message = "Ошибка валидации данных",
-                Errors = validationException.Errors.Select(e => new
-                {
-                    Field = e.PropertyName,
-                    Error = e.ErrorMessage
-                })
-            };
-
-            return context.Response.WriteAsync(JsonSerializer.Serialize(validationResponse));
-        }
-
-
-        if(ex is KeyNotFoundException keyNotFoundException)
-        {
-            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-            var errorResponse = new { StatusCode = context.Response.StatusCode };
-            return context.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
-        }
-
-        if(ex is UnauthorizedAccessException unauthorized)
-        {
-            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            var errorResponse = new { StatusCode = context.Response.StatusCode };
-            return context.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
-        }
-
-        if (ex is ArgumentException argumentException)
-        {
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-
-            var errorResponse = new
-            {
-                StatusCode = context.Response.StatusCode,
-                Message = argumentException.Message
-            };
-
-            return context.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
-        }
-
-        // Обработка по умолчанию
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-        var defaultErrorResponse = new
-        {
-            StatusCode = context.Response.StatusCode,
-            Message = "Произошла ошибка в обработке запроса",
-            Details = ex.Message
+            KeyNotFoundException => (int)HttpStatusCode.NotFound,
+            UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
+            ArgumentException => (int)HttpStatusCode.BadRequest,
+            _ => (int)HttpStatusCode.InternalServerError
         };
 
-        return context.Response.WriteAsync(JsonSerializer.Serialize(defaultErrorResponse));
+        var errorResponse = CreateErrorResponse(context.Response.StatusCode, ex);
 
+        return context.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
+    }
+
+    private object CreateErrorResponse(int statusCode, Exception ex)
+    {
+        return statusCode switch
+        {
+            (int)HttpStatusCode.NotFound => new { StatusCode = statusCode },
+            (int)HttpStatusCode.Unauthorized => new { StatusCode = statusCode },
+            (int)HttpStatusCode.BadRequest => new { StatusCode = statusCode, Message = ex.Message },
+            _ => new { StatusCode = statusCode, Message = "Произошла ошибка в обработке запроса", Details = ex.Message }
+        };
     }
 }

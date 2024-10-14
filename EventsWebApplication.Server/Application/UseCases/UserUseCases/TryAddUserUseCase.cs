@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using EventsWebApplication.Server.Application.DTOs;
+using EventsWebApplication.Server.Application.DTOs.UserDTOs;
+using EventsWebApplication.Server.Application.Interfaces;
 using EventsWebApplication.Server.Application.Interfaces.IUserUseCases;
 using EventsWebApplication.Server.Application.Validators;
 using EventsWebApplication.Server.Domain.Entities;
@@ -26,13 +27,9 @@ namespace EventsWebApplication.Server.Application.UseCases.UserUseCases
             _validator = validator;
         }
 
-        public async Task ExecuteAsync(UserCreateDto userCreateDto)
+        public async Task ExecuteAsync(UserCreateResponseDto userCreateDto)
         {
-            var validationResult = _validator.Validate(userCreateDto);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            
             var user = _mapper.Map<User>(userCreateDto);
             if (await _unitOfWork.Users.GetUserByEmailAsync(user.Email) == null)
             {

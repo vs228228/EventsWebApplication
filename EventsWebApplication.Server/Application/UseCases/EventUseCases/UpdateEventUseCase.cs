@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using EventsWebApplication.Server.Application.DTOs;
+using EventsWebApplication.Server.Application.DTOs.EventDTOs;
 using EventsWebApplication.Server.Application.Interfaces;
 using EventsWebApplication.Server.Application.Interfaces.IEventUseCases;
 using EventsWebApplication.Server.Application.Validators;
 using EventsWebApplication.Server.Domain.Entities;
 using EventsWebApplication.Server.Domain.Interfaces;
-using FluentValidation;
 
 namespace EventsWebApplication.Server.Application.UseCases.EventUseCases
 {
@@ -14,23 +13,17 @@ namespace EventsWebApplication.Server.Application.UseCases.EventUseCases
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFileService _fileService;
         private readonly IMapper _mapper;
-        private readonly EventUpdateDtoValidator _validator;
 
-        public UpdateEventUseCase(IUnitOfWork unitOfWork, IFileService fileService, IMapper mapper, EventUpdateDtoValidator validator)
+        public UpdateEventUseCase(IUnitOfWork unitOfWork, IFileService fileService, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _fileService = fileService;
             _mapper = mapper;
-            _validator = validator;
         }
 
-        public async Task ExecuteAsync(EventUpdateDto eventObject, IFormFile photo)
+        public async Task ExecuteAsync(EventUpdateRequestDto eventObject, IFormFile photo)
         {
-            var validationResult = _validator.Validate(eventObject);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            
 
             Event oldEvent = await _unitOfWork.Events.GetByIdAsync(eventObject.Id);
             if (oldEvent == null)

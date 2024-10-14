@@ -1,9 +1,9 @@
-﻿using EventsWebApplication.Server.Application.DTOs;
+﻿using EventsWebApplication.Server.Application.DTOs.UserDTOs;
 
 namespace EventsWebApplication.Server.Application.Interfaces.IUserUseCases
 {
     public interface IUpdateUserUseCase
     {
-        public Task ExecuteAsync(UserUpdateDto userUpdateDto);
+        public Task ExecuteAsync(UserUpdateRequestDto userUpdateDto);
     }
 }

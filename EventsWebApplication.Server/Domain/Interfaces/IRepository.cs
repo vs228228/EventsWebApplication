@@ -1,6 +1,4 @@
-﻿using EventsWebApplication.Server.Domain.Pagination;
-
-namespace EventsWebApplication.Server.Domain.Interfaces
+﻿namespace EventsWebApplication.Server.Domain.Interfaces
 {
     public interface IRepository<T>
     {

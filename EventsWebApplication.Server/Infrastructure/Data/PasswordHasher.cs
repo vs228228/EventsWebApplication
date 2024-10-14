@@ -1,5 +1,5 @@
-﻿using EventsWebApplication.Server.Domain.Entities;
-using EventsWebApplication.Server.Domain.Interfaces;
+﻿using EventsWebApplication.Server.Application.Interfaces;
+using EventsWebApplication.Server.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace EventsWebApplication.Server.Infrastructure.Data

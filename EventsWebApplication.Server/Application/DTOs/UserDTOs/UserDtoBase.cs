@@ -1,10 +1,7 @@
-﻿using EventsWebApplication.Server.Domain.Entities;
-
-namespace EventsWebApplication.Server.Application.DTOs
+﻿namespace EventsWebApplication.Server.Application.DTOs.UserDTOs
 {
-    public class UserUpdateDto
+    public class UserDtoBase
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
