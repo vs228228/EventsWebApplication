@@ -1,7 +1,7 @@
-﻿using EventsWebApplication.Server.Application.DTOs;
-using EventsWebApplication.Server.Application.DTOs.UserDTOs;
-using EventsWebApplication.Server.Application.Interfaces;
-using EventsWebApplication.Server.Application.Interfaces.IUserUseCases;
+﻿using EventsWebApplication.Application.DTOs;
+using EventsWebApplication.Application.DTOs.UserDTOs;
+using EventsWebApplication.Application.Interfaces;
+using EventsWebApplication.Application.Interfaces.IUserUseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -119,7 +119,7 @@ namespace EventsWebApplication.Server.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUserAsync([FromBody] UserCreateResponseDto userCreateDto) // без хешера и токена не работает
+        public async Task<IActionResult> AddUserAsync([FromBody] UserCreateRequestDto userCreateDto) // без хешера и токена не работает
         {
             await _tryAddUserUseCase.ExecuteAsync(userCreateDto);
             return Ok();
