@@ -11,7 +11,6 @@ namespace EventsWebApplication.Infrastructure.MappingProfile
         {
             CreateMap<UserResponseDto, User>();
             CreateMap<User, UserResponseDto>();
-            CreateMap<IEnumerable<User>, IEnumerable<UserResponseDto>>();
             CreateMap<UserCreateRequestDto, User>();
             CreateMap<UserUpdateRequestDto, User>();
         }

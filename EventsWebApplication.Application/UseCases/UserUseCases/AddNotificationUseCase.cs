@@ -18,6 +18,8 @@ namespace EventsWebApplication.Application.UseCases.UserUseCases
         }
         public async Task ExecuteAsync(NotificationCreateDto notificationDto)
         {
+            User user = await _unitOfWork.Users.GetByIdAsync(notificationDto.UserId);
+            if (user == null) throw new ArgumentException("Пользователь не найден");
             var notification = await _mapper.Map<NotificationCreateDto,Notification>(notificationDto);
             await _unitOfWork.Notifications.AddAsync(notification);
             await _unitOfWork.SaveChangesAsync();
