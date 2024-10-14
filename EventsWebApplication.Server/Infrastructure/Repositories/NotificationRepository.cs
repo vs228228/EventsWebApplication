@@ -6,32 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventsWebApplication.Server.Infrastructure.Repositories
 {
-    public class NotificationRepository : INotificationRepository
+    public class NotificationRepository : Repository<Notification>, INotificationRepository
     {
         private readonly ApplicationDbContext _context;
-        public NotificationRepository(ApplicationDbContext context)
+        public NotificationRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
-        }
-        public async Task AddAsync(Notification notification)
-        {
-            await _context.Notifications.AddAsync(notification);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var notification = await _context.Notifications.FindAsync(id);
-            _context.Notifications.Remove(notification);
-        }
-
-        public Task<IEnumerable<Notification>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Notification> GetByIdAsync(int id)
-        {
-            return await _context.Notifications.FindAsync(id);
         }
 
         public async Task<KeyValuePair<IEnumerable<Notification>, int>> GePagedAsync(int userId, int pageNumber, int pageSize)

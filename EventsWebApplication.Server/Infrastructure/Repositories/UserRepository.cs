@@ -6,31 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventsWebApplication.Server.Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : Repository<User>, IUserRepository
     {
         private readonly ApplicationDbContext _context;
-        public UserRepository(ApplicationDbContext context)
+        public UserRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
-        }
-        public async Task AddAsync(User user)
-        {
-            await _context.Users.AddAsync(user);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            User user = await _context.Users.FindAsync(id);
-            _context.Users.Remove(user);
-        }
-        public async Task UpdateAsync(User user)
-        {
-            _context.Users.Update(user);
-        }
-
-        public async Task<IEnumerable<User>> GetAllAsync()
-        {
-            return _context.Users.ToList();
         }
 
         public async Task<IEnumerable<Event>> GetRegisteredEventsAsync(int userId)
@@ -45,11 +26,6 @@ namespace EventsWebApplication.Server.Infrastructure.Repositories
         {
             return _context.Users
             .FirstOrDefaultAsync(u => u.Email == email);
-        }
-
-        public async Task<User> GetByIdAsync(int id)
-        {
-            return await _context.Users.FindAsync(id);
         }
 
         public async Task<KeyValuePair<IEnumerable<User>, int>> GetPagedAsync(int pageNumber, int pageSize)

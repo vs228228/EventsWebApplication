@@ -6,37 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventsWebApplication.Server.Infrastructure.Repositories
 {
-    public class EventRepository : IEventRepository
+    public class EventRepository : Repository<Event>, IEventRepository
     {
         private readonly ApplicationDbContext _context;
-        public EventRepository(ApplicationDbContext context)
+        public EventRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
-        }
-        public async Task AddAsync(Event eventObject)
-        {
-            await _context.Events.AddAsync(eventObject);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            Event entity = await _context.Events.FindAsync(id);
-            _context.Events.Remove(entity);
-        }
-
-        public async Task UpdateAsync(Event eventOjbect)
-        {
-            _context.Events.Update(eventOjbect);
-        }
-
-        public async Task<IEnumerable<Event>> GetAllAsync()
-        {
-            return await _context.Events.ToListAsync();
-        }
-
-        public async Task<Event> GetByIdAsync(int id)
-        {
-            return await _context.Events.FindAsync(id);
         }
 
         public async Task<IEnumerable<User>> GetUsersByEventIdAsync(int eventId)

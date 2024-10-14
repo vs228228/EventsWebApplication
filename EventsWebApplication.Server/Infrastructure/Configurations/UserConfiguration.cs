@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EventsWebApplication.Server.Infrastructure.Data.Configurations
+namespace EventsWebApplication.Server.Infrastructure.Configurations
 {
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
