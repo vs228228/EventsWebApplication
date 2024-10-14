@@ -3,9 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventsWebApplication.Server", "EventsWebApplication.Server\EventsWebApplication.Server.csproj", "{DEF5D8A6-CFC3-4E8F-9E06-DB45B9BAD8EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventsWebApplication.Server", "EventsWebApplication.Server\EventsWebApplication.Server.csproj", "{DEF5D8A6-CFC3-4E8F-9E06-DB45B9BAD8EF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{10E28613-8CAC-46E2-856E-C8B4F91470B6} = {10E28613-8CAC-46E2-856E-C8B4F91470B6}
+		{82D573A3-52B9-4D1C-B8F1-55B08F87C240} = {82D573A3-52B9-4D1C-B8F1-55B08F87C240}
+		{87154F4A-A4AF-4038-B424-C1E5CBC0F75D} = {87154F4A-A4AF-4038-B424-C1E5CBC0F75D}
+	EndProjectSection
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "eventswebapplication.client", "eventswebapplication.client\eventswebapplication.client.esproj", "{D06875BA-CF05-4F76-8A9C-1D077542F1FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventsWebApplication.Domain", "EventsWebApplication.Domain\EventsWebApplication.Domain.csproj", "{82D573A3-52B9-4D1C-B8F1-55B08F87C240}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventsWebApplication.Application", "EventsWebApplication.Application\EventsWebApplication.Application.csproj", "{87154F4A-A4AF-4038-B424-C1E5CBC0F75D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{82D573A3-52B9-4D1C-B8F1-55B08F87C240} = {82D573A3-52B9-4D1C-B8F1-55B08F87C240}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventsWebApplication.Infrastructure", "EventsWebApplication.Infrastructure\EventsWebApplication.Infrastructure.csproj", "{10E28613-8CAC-46E2-856E-C8B4F91470B6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{82D573A3-52B9-4D1C-B8F1-55B08F87C240} = {82D573A3-52B9-4D1C-B8F1-55B08F87C240}
+		{87154F4A-A4AF-4038-B424-C1E5CBC0F75D} = {87154F4A-A4AF-4038-B424-C1E5CBC0F75D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +41,18 @@ Global
 		{D06875BA-CF05-4F76-8A9C-1D077542F1FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D06875BA-CF05-4F76-8A9C-1D077542F1FA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D06875BA-CF05-4F76-8A9C-1D077542F1FA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{82D573A3-52B9-4D1C-B8F1-55B08F87C240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82D573A3-52B9-4D1C-B8F1-55B08F87C240}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82D573A3-52B9-4D1C-B8F1-55B08F87C240}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82D573A3-52B9-4D1C-B8F1-55B08F87C240}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87154F4A-A4AF-4038-B424-C1E5CBC0F75D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87154F4A-A4AF-4038-B424-C1E5CBC0F75D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87154F4A-A4AF-4038-B424-C1E5CBC0F75D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87154F4A-A4AF-4038-B424-C1E5CBC0F75D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10E28613-8CAC-46E2-856E-C8B4F91470B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10E28613-8CAC-46E2-856E-C8B4F91470B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10E28613-8CAC-46E2-856E-C8B4F91470B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10E28613-8CAC-46E2-856E-C8B4F91470B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
-﻿using EventsWebApplication.Server.Application.DTOs.EventDTOs;
-using EventsWebApplication.Server.Application.DTOs.UserDTOs;
-using EventsWebApplication.Server.Application.Interfaces;
-using EventsWebApplication.Server.Application.Interfaces.IEventUseCases;
+﻿using EventsWebApplication.Application.DTOs.EventDTOs;
+using EventsWebApplication.Application.DTOs.UserDTOs;
+using EventsWebApplication.Application.Interfaces;
+using EventsWebApplication.Application.Interfaces.IEventUseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

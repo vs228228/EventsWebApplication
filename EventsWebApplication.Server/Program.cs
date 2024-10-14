@@ -1,19 +1,21 @@
-using EventsWebApplication.Server.Application.Interfaces;
-using EventsWebApplication.Server.Application.Interfaces.IEventUseCases;
-using EventsWebApplication.Server.Application.Interfaces.IUserUseCases;
-using EventsWebApplication.Server.Application.Services;
-using EventsWebApplication.Server.Application.UseCases.EventUseCases;
-using EventsWebApplication.Server.Application.UseCases.UserUseCases;
-using EventsWebApplication.Server.Application.Validators;
-using EventsWebApplication.Server.Domain.Interfaces;
-using EventsWebApplication.Server.Infrastructure.Data;
-using EventsWebApplication.Server.Infrastructure.Repositories;
+using EventsWebApplication.Domain.Interfaces;
+using EventsWebApplication.Application.Interfaces;
+using EventsWebApplication.Application.Interfaces.IEventUseCases;
+using EventsWebApplication.Application.Interfaces.IUserUseCases;
+using EventsWebApplication.Application.Services;
+using EventsWebApplication.Application.UseCases.EventUseCases;
+using EventsWebApplication.Application.UseCases.UserUseCases;
+using EventsWebApplication.Infrastructure.Data;
+using EventsWebApplication.Infrastructure.Repositories;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using EventsWebApplication.Infrastructure.Validators;
+using EventsWebApplication.Infrastructure.MappingProfile;
+using EventsWebApplication.Infrastructure.Data.Infrastructure.Services;
 
 namespace EventsWebApplication.Server
 {
@@ -68,12 +70,9 @@ namespace EventsWebApplication.Server
             });
 
             // маппер
-            builder.Services.AddAutoMapper(typeof(EventMappingProfile));
             builder.Services.AddAutoMapper(typeof(UserMappingProfile));
-            builder.Services.AddAutoMapper(typeof(NotificationMappingProfile));
-            builder.Services.AddAutoMapper(typeof(DateOnlyMappingProfile));
+            builder.Services.AddScoped<IMapperService, AutoMapperService>();
 
-            // Инъекция зависимостей
 
             // use-case
             builder.Services.AddScoped<IAddEventUseCase, AddEventUseCase>();
@@ -118,7 +117,6 @@ namespace EventsWebApplication.Server
                 config.RegisterValidatorsFromAssemblyContaining<UserUpdateDtoValidator>();
                 config.RegisterValidatorsFromAssemblyContaining<EventUpdateDtoValidator>();
                 config.RegisterValidatorsFromAssemblyContaining<EventCreateDtoValidator>();
-                config.RegisterValidatorsFromAssemblyContaining<AddNotificationValidator>();
             });
 
             // jwt
